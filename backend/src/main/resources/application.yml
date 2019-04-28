@@ -1,0 +1,59 @@
+server:
+  port: 8082
+  # Session timeout in seconds.
+  session:
+    # 24h
+    timeout: 86400
+
+#攔截器需排除的路徑
+interceptor: 
+  includePath: /api/.*
+  # 不需要token与url签名校验的路径，多个用逗号分隔，每个路径为正则表达式匹配
+  excludePath: |
+    #登录
+    /api/login, 
+    /api/stock/fetchAllHistory, 
+    /api/stock/fetchHistory,
+    #monitor
+    /myhealth,
+    /ops/.*
+  
+spring:
+  application:
+    name: stock-webapp
+    
+  datasource: 
+    url: jdbc:mysql://127.0.0.1:3306/wenchun?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: Aa654321
+    driver-class-name: com.mysql.jdbc.Driver
+        
+  # 这个开发配置为false，避免改了模板还要重启服务器
+  thymeleaf:
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html
+    mode: LEGACYHTML5
+
+  # Redis Config  
+  redis: 
+    host: 192.168.99.100
+    port: 6379
+
+mybatis:
+  mapperLocations: classpath:mybatis/*.xml
+  config-location: classpath:mybatis-config.xml
+  
+stock:
+  upload-temp-folder: /temp
+
+---
+spring:
+  profiles: prod
+  
+  datasource: 
+    url: jdbc:mysql://127.0.0.1:3306/wenchun?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: Aa654321
+    driver-class-name: com.mysql.jdbc.Driver

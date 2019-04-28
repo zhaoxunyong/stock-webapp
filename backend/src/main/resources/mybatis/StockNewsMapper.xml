@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.stock.fetch.dao.StockNewsMapper" >
+  <resultMap id="BaseResultMap" type="org.stock.fetch.model.StockNews" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="stock_id" property="stockId" jdbcType="BIGINT" />
+    <result column="froms" property="froms" jdbcType="VARCHAR" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="news_date" property="newsDate" jdbcType="DATE" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="BaseColumnList">
+    id, stock_id, froms, subject, url, news_date, create_date, update_date
+  </sql>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from stock_news
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteByStockNews" parameterType="org.stock.fetch.model.StockNews" >
+    delete from stock_news
+    where froms = #{froms,jdbcType=VARCHAR} 
+    and news_date = #{newsDate,jdbcType=DATE} 
+    and subject = #{subject,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="org.stock.fetch.model.StockNews" useGeneratedKeys="true" keyProperty="id" >
+    insert into stock_news (id, stock_id, froms, 
+      subject, url, news_date, 
+      create_date, update_date)
+    values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{froms,jdbcType=VARCHAR}, 
+      #{subject,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{newsDate,jdbcType=DATE}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="org.stock.fetch.model.StockNews" >
+    update stock_news
+    set stock_id = #{stockId,jdbcType=BIGINT},
+      froms = #{froms,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      news_date = #{newsDate,jdbcType=DATE},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select <include refid="BaseColumnList" />
+    from stock_news
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getLatestNews" resultMap="BaseResultMap">
+    select <include refid="BaseColumnList" />
+    from stock_news 
+    WHERE stock_id = #{stockId,jdbcType=BIGINT} ORDER BY news_date desc limit 1
+  </select>
+  
+<!--   <select id="selectByStockId" resultMap="BaseResultMap" > -->
+<!--     select <include refid="BaseColumnList" /> -->
+<!--     from stock_news -->
+<!--     where stock_id = #{stockId,jdbcType=BIGINT} -->
+<!--     order by news_date desc limit #{startNo, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} -->
+<!--   </select> -->
+  
+  <select id="selectExcludeByStockId" resultMap="BaseResultMap" >
+    select DISTINCT a.*
+        <if test="selectedType == 0">
+	    	from stock_news a, stock_my_store b
+	    </if>
+        <if test="selectedType != 0">
+	    	from stock_news a, stock_my_selected b
+	    </if>
+    <where>
+        and a.stock_id = b.stock_id
+        <if test="selectedType != 0">
+	    	and b.selected_type = #{selectedType,jdbcType=BIGINT}
+	    </if>
+        <if test="stockId != 0">
+	    	and a.stock_id = #{stockId,jdbcType=BIGINT}
+	    </if>
+        <if test="stockId == 0">
+	    	and to_days(a.news_date) >= TO_DAYS(NOW())
+	    </if>
+        <if test="excludeKeys!=null and excludeKeys!=''">
+	    	and indexof_string(a.subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+	    </if>
+    </where>
+       <if test="stockId != 0">
+    	order by a.news_date desc 
+    </if>
+       <if test="stockId == 0">
+    	order by a.stock_id asc, a.news_date desc 
+    </if>
+    limit #{startNo, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  
+  <select id="excludeCount" resultType="int" >
+  	select count(DISTINCT a.id) 
+    <if test="selectedType == 0">
+	    	from stock_news a, stock_my_store b
+	    </if>
+        <if test="selectedType != 0">
+	    	from stock_news a, stock_my_selected b
+	    </if>
+    <where>
+        and a.stock_id = b.stock_id
+        <if test="selectedType != 0">
+	    	and b.selected_type = #{selectedType,jdbcType=BIGINT}
+	    </if>
+        <if test="stockId != 0">
+	    	and a.stock_id = #{stockId,jdbcType=BIGINT}
+	    </if>
+        <if test="stockId == 0">
+	    	and to_days(a.news_date) >= TO_DAYS(NOW())
+	    </if>
+        <if test="excludeKeys!=null and excludeKeys!=''">
+	    	and indexof_string(a.subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+	    </if>
+    </where>
+  </select>
+  
+  <select id="selectIncludeByStockId" resultMap="BaseResultMap" >
+    select x.* from 
+    (select DISTINCT a.*
+	    <if test="selectedType == 0">
+	    	from stock_news a, stock_my_store b
+	    </if>
+        <if test="selectedType != 0">
+	    	from stock_news a, stock_my_selected b
+	    </if>
+    <where>
+        and a.stock_id = b.stock_id
+        <if test="selectedType != 0">
+	    	and b.selected_type = #{selectedType,jdbcType=BIGINT}
+	    </if>
+        <if test="stockId != 0">
+	    	and a.stock_id = #{stockId,jdbcType=BIGINT} 
+	    </if>
+        <if test="stockId == 0">
+	    	and to_days(a.news_date) >= TO_DAYS(NOW()) 
+	    </if>
+        <if test="excludeKeys!=null and excludeKeys!=''">
+	    	and indexof_string(a.subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+	    </if>
+    </where>
+       <if test="stockId != 0">
+    	order by a.news_date desc
+    </if>
+       <if test="stockId == 0">
+    	order by a.stock_id asc,a.news_date desc 
+    </if>
+    ) x
+	<if test="includeKeys!=null and includeKeys!=''">
+    	where indexof_string(x.subject, #{includeKeys, jdbcType=VARCHAR}) = 1
+    </if>
+	limit #{startNo, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  
+<!--   <select id="count" resultType="int" > -->
+<!--     select count(id)  -->
+<!--     from stock_news -->
+<!--     where stock_id = #{stockId,jdbcType=BIGINT} -->
+<!--   </select> -->
+  
+  <select id="includeCount" resultType="int" >
+    select count(x.id) from 
+    (select DISTINCT a.*
+	    <if test="selectedType == 0">
+	    	from stock_news a, stock_my_store b
+	    </if>
+        <if test="selectedType != 0">
+	    	from stock_news a, stock_my_selected b
+	    </if>
+    <where>
+        and a.stock_id = b.stock_id
+        <if test="selectedType != 0">
+	    	and b.selected_type = #{selectedType,jdbcType=BIGINT}
+	    </if>
+        <if test="stockId != 0">
+	    	and a.stock_id = #{stockId,jdbcType=BIGINT} 
+	    </if>
+        <if test="stockId == 0">
+	    	and to_days(a.news_date) >= TO_DAYS(NOW()) 
+	    </if>
+        <if test="excludeKeys!=null and excludeKeys!=''">
+	    	and indexof_string(a.subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+	    </if>
+    </where>
+    ) x
+	<if test="includeKeys!=null and includeKeys!=''">
+    	where indexof_string(x.subject, #{includeKeys, jdbcType=VARCHAR}) = 1
+    </if>
+  </select>
+  
+  <select id="selectExcludeByStockId4All" resultMap="BaseResultMap" >
+    select <include refid="BaseColumnList" />
+    from stock_news
+    where stock_id = #{stockId,jdbcType=BIGINT} 
+    <if test="excludeKeys!=null and excludeKeys!=''">
+    	and indexof_string(subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+    </if>
+    order by news_date desc limit #{startNo, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectIncludeByStockId4All" resultMap="BaseResultMap" >
+    select b.* from 
+    (select a.*
+	    from stock_news a
+	    where a.stock_id = #{stockId,jdbcType=BIGINT} 
+	<if test="excludeKeys!=null and excludeKeys!=''">
+    	and indexof_string(a.subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+    </if>
+    ) b
+	<if test="includeKeys!=null and includeKeys!=''">
+    	where indexof_string(b.subject, #{includeKeys, jdbcType=VARCHAR}) = 1
+    </if>
+	order by b.news_date desc limit #{startNo, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  
+  <select id="excludeCount4All" resultType="int" >
+    select count(id) 
+    from stock_news
+    where stock_id = #{stockId,jdbcType=BIGINT} 
+	<if test="excludeKeys!=null and excludeKeys!=''">
+    	and indexof_string(subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+    </if>
+  </select>
+  
+  <select id="includeCount4All" resultType="int" >
+    select count(b.id) from 
+    (select a.*
+	    from stock_news a
+	    where a.stock_id = #{stockId,jdbcType=BIGINT} 
+	<if test="excludeKeys!=null and excludeKeys!=''">
+    	and indexof_string(a.subject, #{excludeKeys, jdbcType=VARCHAR}) = 0
+    </if>
+	) b
+	<if test="includeKeys!=null and includeKeys!=''">
+    	where indexof_string(b.subject, #{includeKeys, jdbcType=VARCHAR}) = 1
+    </if>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select <include refid="BaseColumnList" />
+    from stock_news
+  </select>
+</mapper>
