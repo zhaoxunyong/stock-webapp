@@ -10,7 +10,7 @@
     <!-- stockCandle -->
     <!-- 顺序不能变 1:stockCandle 2:stockVol 3:stockRsi 4:stockDmi 5:stockMacd 6:stockTower -->
     <!-- <div v-for="item in items" :class="item.type == 1 ? 'move1-item' : 'move-item'"> -->
-      <div v-for="item in items" class="move-item">
+      <div v-for="item in items" class="move-item" :key="item">
         <div :id="'tooltipId'+item.type+kineType" :charttype="item.type" :class="'tooltips w-100 text-left tooltopStyle'+item.type"></div>
         <div :id="'myChart'+item.type+kineType" :data="item.type" :class="'echarts'+item.type"></div>
     </div>

@@ -3,7 +3,7 @@
     <div>
       <!--<Alert></Alert>-->
       <div id="stockMySelectedItem">
-        <span v-for="item in items" class="move-item">
+        <span v-for="item in items" :key='item' class="move-item">
           <b-button :variant="isSelected(item.type)" :id="item.type" :data="item.name" @click="changedValue(item.type)">
               {{ item.name }}
           <span @click.prevent="removeStockMySelected(item.type, item.name)" aria-hidden="true">×</span>
@@ -11,39 +11,47 @@
         </span>
       </div>
 
-      <div class="float-right w-25">
-        <b-btn v-b-modal.modalPrevent variant="info">添加</b-btn>
-        <b-btn v-if="currSelectedType != ''" variant="info" v-b-modal.modalPrevent2>修改名稱</b-btn>
-        <b-btn v-if="currSelectedType != ''" variant="info" @click="save2StockMyData">保存</b-btn>
-        <!-- Modal Component -->
-        <b-modal id="modalPrevent"
-                 ref="modal"
-                 title="请输入自選股名称"
-                 @ok="handleOk"
-                 @shown="clearName">
-          <form @submit.stop.prevent="handleSubmit">
-            <b-form-input type="text"
-                          placeholder="输入自選股名称"
-                          v-model="name" ref="focusThis"></b-form-input>
-          </form>
-        </b-modal>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-9">
+          
+          </div>
+          <div class="col-3">
+            <b-btn v-b-modal.modalPrevent variant="info">添加</b-btn>
+            <b-btn v-if="currSelectedType != ''" variant="info" v-b-modal.modalPrevent2>修改名稱</b-btn>
+            <b-btn v-if="currSelectedType != ''" variant="info" @click="save2StockMyData">保存</b-btn>
+            <!-- Modal Component -->
+            <b-modal id="modalPrevent"
+                    ref="modal"
+                    title="请输入自選股名称"
+                    @ok="handleOk"
+                    @shown="clearName">
+              <form @submit.stop.prevent="handleSubmit">
+                <b-form-input type="text"
+                              placeholder="输入自選股名称"
+                              v-model="name" ref="focusThis"></b-form-input>
+              </form>
+            </b-modal>
 
-        <!-- Modal Component -->
-        <b-modal id="modalPrevent2"
-                 ref="modal2"
-                 title="请输入需要修改的自選股名称"
-                 @ok="handleOk2"
-                 @shown="clearName2">
-          <form @submit.stop.prevent="handleSubmit2">
-            <b-form-input type="text"
-                          placeholder="请输入需要修改的自選股名称"
-                          v-model="name" ref="focusThis2"></b-form-input>
-          </form>
-        </b-modal>
+            <!-- Modal Component -->
+            <b-modal id="modalPrevent2"
+                    ref="modal2"
+                    title="请输入需要修改的自選股名称"
+                    @ok="handleOk2"
+                    @shown="clearName2">
+              <form @submit.stop.prevent="handleSubmit2">
+                <b-form-input type="text"
+                              placeholder="请输入需要修改的自選股名称"
+                              v-model="name" ref="focusThis2"></b-form-input>
+              </form>
+            </b-modal>
+          </div>
+        </div>
       </div>
+
       <!-- List with handle -->
       <div id="listWithHandle">
-        <div class="list-group-item float-left wd-fixed py-1 my-1" v-for="(item, index) in list">
+        <div class="list-group-item float-left wd-fixed py-1 my-1" :key='item' v-for="(item, index) in list">
           <span class="badge">{{index+1}}</span>
           <span class="oi oi-move" aria-hidden="true"></span>
           <autocomplete
@@ -57,7 +65,7 @@
           </autocomplete>
         </div>
 
-        <div v-if="currSelectedType != ''" class="list-group-item float-left wd-fixed py-1 my-1" v-for="i in initNumber-list.length">
+        <div class="list-group-item float-left wd-fixed py-1 my-1" :key='i' v-for="i in initNumber-list.length">
           <span class="badge">{{i+list.length}}</span>
           <span class="oi oi-move" aria-hidden="true"></span>
           <autocomplete
