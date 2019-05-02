@@ -427,6 +427,7 @@ public class StockServiceImpl implements StockService {
             BigDecimal highest = stockHistoryDailys.stream().map(StockHistoryDaily::getVol).reduce(BigDecimal::max).get();
             // BigDecimal vol = stockHistoryDailys.stream().map(StockHistoryDaily::getTotalAmount).reduce(new BigDecimal(0), (a, b) -> a.add(b));
             BigDecimal vol = stockHistoryDailys.get(stockHistoryDailys.size()-1).getTotalAmount();
+            BigDecimal upsDowns = stockHistoryDailys.get(stockHistoryDailys.size()-1).getUpsDowns();
             StockHistory currentStockHistory = new StockHistory();
             currentStockHistory.setId(IdUtils.genLongId());
             currentStockHistory.setStockId(stockId);
@@ -437,6 +438,7 @@ public class StockServiceImpl implements StockService {
             currentStockHistory.setLowest(lowest);
             currentStockHistory.setHighest(highest);
             currentStockHistory.setVol(vol);
+            currentStockHistory.setUpsDowns(upsDowns);
             currentStockHistory.setDate(new Date());
             return currentStockHistory;
         }

@@ -1,5 +1,6 @@
 package org.stock.fetch.mapping;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.http.impl.cookie.DateUtils;

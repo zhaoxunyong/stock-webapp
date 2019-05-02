@@ -53,14 +53,14 @@ export default function getData(chartObj, datasets, kineType) {
             // 数据结构：dataIndex/opening/closing/lowest/highest/vol
             // formatter: "{b} 收 {c2} 開 {c1} 高 {c4} 低 {c3}",
             formatter: function (params) {
-                // rs[i].opening, rs[i].closing, rs[i].lowest, rs[i].highest, rs[i].vol
+                // rs[i].opening, rs[i].closing, rs[i].lowest, rs[i].highest, rs[i].vol, rs[i].riseRate
                 // let data0 = stockUtils.getSeriesIndex(params,0)
                 // 83, 72.5, 70, 67, 73.8, "16032"
                 let v = `${params[0].axisValue} 
-                收: ${params[0].data[2]} 
                 開: ${params[0].data[1]} 
                 高: ${params[0].data[4]} 
-                低: ${params[0].data[3]}<br/>
+                低: ${params[0].data[3]}
+                收: ${params[0].data[2]}<br/>
                 ${kDisplay}線 
                 <font color="${STOCK_CONFIG.col.m5}">M5:</font> ${params[1].value} 
                 <font color="${STOCK_CONFIG.col.m10}">M10:</font> ${params[2].value} 
@@ -97,10 +97,10 @@ export default function getData(chartObj, datasets, kineType) {
                 '布林通道3',]
         }, */
         grid: [{
-            top: '8%',
-            left: '6%',
-            right: '0%',
-            height: '80%'
+            top: '4%',
+            left: '2%',
+            right: '6%',
+            height: '88%'
         }],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
@@ -122,6 +122,7 @@ export default function getData(chartObj, datasets, kineType) {
             boundaryGap: true,
             // 坐标文字内容
             axisLabel: {
+                show: false,
                 onZero: false,
                 // 坐标文字相关样式
                 textStyle: {
@@ -131,11 +132,17 @@ export default function getData(chartObj, datasets, kineType) {
                 formatter: function (value) {
                     return dateUtils.formatTime('MM/dd', value)
                 }
-            }
+            },
+            // 坐标刻度
+            axisTick: {
+                show: false
+            },
         }],
         // 
         yAxis: [{
+            position: 'right',
             axisLabel: {
+                // margin:-18,
                 lineStyle:{  
                     color:'red',  
                 },
@@ -165,7 +172,6 @@ export default function getData(chartObj, datasets, kineType) {
                 let highest = highs.reduce((pre,cur) => pre>cur?pre:cur)
                 return (highest*1.05).toFixed(0)
             },
-            // position: 'right',,
             // type: 'value',
             splitNumber:6,
             // splitArea: {
@@ -177,6 +183,10 @@ export default function getData(chartObj, datasets, kineType) {
                     color: ['#888'],
                     type: 'dotted'
                 }
+            },
+            // 坐标刻度
+            axisTick: {
+                show: true
             }
         }],
         dataZoom: [{

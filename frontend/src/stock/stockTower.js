@@ -33,10 +33,10 @@ export default function getData(datasets, kineType) {
             }
         },
         grid: [{
-            top: '5%',
-            left: '6%',
-            right: '0%',
-            height: '80%'
+            top: '4%',
+            left: '2%',
+            right: '6%',
+            height: '90%'
         }],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
@@ -84,6 +84,12 @@ export default function getData(datasets, kineType) {
                 },
                 color: STOCK_CONFIG.col.y
             }, */
+            position: 'right',
+            axisLabel: {
+                show: false,
+                // margin:-18,
+                onZero: false
+            },
             scale: true,
             // position: 'right',
             min: function(value) {
@@ -103,8 +109,9 @@ export default function getData(datasets, kineType) {
                     type: 'dotted'
                 }
             },
-            axisLabel: {
-                onZero: false
+            // 坐标刻度
+            axisTick: {
+                show: false
             }
         }],
         dataZoom: [{

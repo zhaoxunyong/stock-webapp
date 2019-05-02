@@ -91,10 +91,10 @@ export default function getData (datasets, kineType) {
             }
         },
         grid: [{
-            top: '5%',
-            left: '6%',
-            right: '0%',
-            height: '80%'
+            top: '4%',
+            left: '2%',
+            right: '6%',
+            height: '90%'
         }],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
@@ -137,7 +137,10 @@ export default function getData (datasets, kineType) {
         }],
         // 
         yAxis: [{
+            position: 'right',
             axisLabel: {
+                show: false,
+                // margin:-18,
                 lineStyle:{  
                     color:'red',  
                 },
@@ -161,6 +164,10 @@ export default function getData (datasets, kineType) {
                     color: ['#888'],
                     type: 'dotted'
                 }
+            },
+            // 坐标刻度
+            axisTick: {
+                show: false
             }
         }],
         dataZoom: [{

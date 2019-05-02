@@ -5,7 +5,7 @@
         <a class="nav-link active" href="#" @click.prevent="showExcludeNews($event)">市場重大新聞</a>
         <a class="nav-link" href="#" @click.prevent="showIncludeNews($event)">市場焦點新聞</a>
       </nav>
-      <div class="text container-fluid">
+      <div class="text container-fluid news-content">
         <b-table striped hover :items="items" :fields="fields">
           <span slot="content_title" slot-scope="data" v-html="data.value" />
         </b-table>
@@ -165,6 +165,10 @@ export default {
 </script>
 
 <style scoped>
+  .news-content {
+    font-size: 18px;
+    font-weight: bold;
+  }
   .text {
     height: 75vh;
     margin: 0 auto;

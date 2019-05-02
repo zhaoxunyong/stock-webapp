@@ -24,6 +24,8 @@ public class StockHistoryDto extends BaseDto {
 
     private String vol;
 
+    private BigDecimal upsDowns;
+
     public String getId() {
         return id;
     }
@@ -86,6 +88,14 @@ public class StockHistoryDto extends BaseDto {
 
     public void setVol(String vol) {
         this.vol = vol;
+    }
+
+    public BigDecimal getUpsDowns() {
+        return this.upsDowns;
+    }
+
+    public void setUpsDowns(BigDecimal upsDowns) {
+        this.upsDowns = upsDowns;
     }
 
 }

@@ -10,7 +10,7 @@
         <a class="nav-link" href="#" @click.prevent="showIncludeNewsAll($event)">自選股全焦點</a>
       </nav>
     </div>
-    <div class="container-fluid scrollbar" id="style-1">
+    <div class="container-fluid scrollbar news-content" id="style-1">
       <b-table striped hover :items="items" :fields="fields">
         <span slot="content_title" slot-scope="data" v-html="data.value" />
       </b-table>
@@ -224,6 +224,11 @@ export default {
     margin: 0 auto;
     overflow: auto;
   } */
+.news-content {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .scrollbar {
   height: 73vh;
   margin: 0 auto;

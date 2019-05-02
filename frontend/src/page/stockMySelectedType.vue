@@ -140,9 +140,9 @@ export default {
 </script>
 
 <style scoped>
-div {
+/* div {
   padding: 10px;
-}
+} */
 
 div button {
   margin: 5px;

@@ -11,8 +11,8 @@
     <!-- 顺序不能变 1:stockCandle 2:stockVol 3:stockRsi 4:stockDmi 5:stockMacd 6:stockTower -->
     <!-- <div v-for="item in items" :class="item.type == 1 ? 'move1-item' : 'move-item'"> -->
       <div v-for="item in items" class="move-item">
-      <div :id="'tooltipId'+item.type+kineType" :charttype="item.type" class="tooltips w-100 text-left"></div>
-      <div :id="'myChart'+item.type+kineType" :data="item.type" :class="'echarts'+item.type"></div>
+        <div :id="'tooltipId'+item.type+kineType" :charttype="item.type" :class="'tooltips w-100 text-left tooltopStyle'+item.type"></div>
+        <div :id="'myChart'+item.type+kineType" :data="item.type" :class="'echarts'+item.type"></div>
     </div>
   </div>
 </template>
@@ -205,7 +205,8 @@ export default {
                 rs[i].closing,
                 rs[i].lowest,
                 rs[i].highest,
-                rs[i].vol
+                rs[i].vol,
+                rs[i].upsDowns
               ])
             }
           } else {
@@ -321,15 +322,23 @@ export default {
 }
 .echarts1 {
   width: 99%;
-  height: 190px;
+  height: 247px;
 }
 .echarts2, .echarts3, .echarts4, .echarts5, .echarts6 {
   width: 99%;
-  height: 90px;
+  height: 103px;
 }
-.tooltips {
+.tooltopStyle1 {
   font-size: 100%;
   margin-left: 40px;
+  position:absolute;
+  /* top: 50px; */
+}
+.tooltopStyle2, .tooltopStyle3, .tooltopStyle4, .tooltopStyle5, .tooltopStyle6 {
+  font-size: 100%;
+  margin-left: 40px;
+  position:absolute;
+  /* top: 20px; */
 }
 </style>
 

@@ -49,10 +49,10 @@ export default function getData (datasets, kineType) {
             }
         },
         grid: [{
-            top: '5%',
-            left: '6%',
-            right: '0%',
-            height: '80%'
+            top: '4%',
+            left: '2%',
+            right: '6%',
+            height: '90%'
         }],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
@@ -101,6 +101,19 @@ export default function getData (datasets, kineType) {
                 },
                 color: STOCK_CONFIG.col.y
             }, */
+            position: 'right',
+            axisLabel: {
+                // margin:-18,
+                onZero: false,
+                // 坐标文字相关样式
+                /* textStyle: {
+                    fontSize: '12px',
+                    color: 'green'
+                } , */
+                formatter: function (value) {
+                    return value >= 1000 ? (value / 1000).toFixed(0) +'k' : value
+                }
+            },
             scale: true,
             // position: 'right',
             min: 0,
@@ -116,17 +129,6 @@ export default function getData (datasets, kineType) {
                 lineStyle: {
                     color: ['#888'],
                     type: 'dotted'
-                }
-            },
-            axisLabel: {
-                onZero: false,
-                // 坐标文字相关样式
-                /* textStyle: {
-                    fontSize: '12px',
-                    color: 'green'
-                } , */
-                formatter: function (value) {
-                    return value >= 1000 ? (value / 1000).toFixed(0) +'k' : value
                 }
             }
         }],

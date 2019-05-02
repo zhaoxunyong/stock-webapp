@@ -36,6 +36,6 @@ window.STOCK_CONFIG = {
         // y: '#ffefef'
     },
     // bg: '#000',
-    st: 43,
+    st: 41,
     ed: 100
 }

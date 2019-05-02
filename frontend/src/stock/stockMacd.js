@@ -64,10 +64,10 @@ export default function getData (datasets, kineType) {
             }
         },
         grid: [{
-            top: '5%',
-            left: '6%',
-            right: '0%',
-            height: '80%'
+            top: '4%',
+            left: '2%',
+            right: '6%',
+            height: '90%'
         }],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
@@ -104,7 +104,9 @@ export default function getData (datasets, kineType) {
         }],
         // 
         yAxis: [{
+            position: 'right',
             axisLabel: {
+                // margin:-18,
                 lineStyle:{  
                     color:'red',  
                 },
@@ -112,14 +114,8 @@ export default function getData (datasets, kineType) {
             },
             scale: true,
             // position: 'right',
-            // min: 'dataMin',
-            // max: 'dataMax',
-            min: function(value) {
-                return (lowest*0.95).toFixed(0);
-            },
-            max: function(value) {
-                return (highest*1.05).toFixed(0);
-            },
+            min: 'dataMin',
+            max: 'dataMax',
             splitNumber: 2,
             // splitArea: {
             //     show: false

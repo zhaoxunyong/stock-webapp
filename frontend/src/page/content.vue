@@ -18,13 +18,13 @@
           <b-row>
             <!--个股左侧信息-->
             <b-col style="max-width: 70%">
-              <b-row class="mt-3">
+              <b-row class="mt-0">
                 <b-col cols="12" sm="12" class="pl-3 pr-3">
                   <!--个股K线图-->
                   <StockKLineChart></StockKLineChart>
                 </b-col>
               </b-row>
-              <b-row class="mt-3">
+              <b-row class="mt-0">
                 <b-col cols="12" sm="12" class="pl-3 pr-3">
                   <stock-news></stock-news>
                 </b-col>
