@@ -41,27 +41,32 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.2</version>
+        <version>1.7.5</version>
         <executions>
           <!-- Install our node and npm version to run npm/node scripts-->
           <execution>
-            <id>install node and npm</id>
+            <id>install node and yarn</id>
             <goals>
-              <goal>install-node-and-npm</goal>
+              <goal>install-node-and-yarn</goal>
             </goals>
+            <!-- optional: default phase is "generate-resources" -->
+            <phase>generate-resources</phase>
             <configuration>
               <nodeVersion>v8.15.1</nodeVersion>
-              <npmVersion>6.4.1</npmVersion>
+              <yarnVersion>v1.15.2</yarnVersion>
+
+              <!-- optional: where to download node from. Defaults to https://nodejs.org/dist/ -->
               <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
-              <npmDownloadRoot>http://registry.npmjs.org/npm/-/</npmDownloadRoot>
+              <!-- optional: where to download yarn from. Defaults to https://github.com/yarnpkg/yarn/releases/download/ -->
+              <yarnDownloadRoot>https://github.com/yarnpkg/yarn/releases/download/</yarnDownloadRoot>
             </configuration>
           </execution>
 
           <!-- Set NPM Registry -->
           <execution>
-            <id>npm set registry</id>
+            <id>yarn set registry</id>
             <goals>
-              <goal>npm</goal>
+              <goal>yarn</goal>
             </goals>
             <configuration>
               <!--<arguments>config set registry https://registry.npmjs.org</arguments>-->
@@ -71,9 +76,9 @@
 
           <!-- Set SSL privilege -->
           <execution>
-            <id>npm set non-strict ssl</id>
+            <id>yarn set non-strict ssl</id>
             <goals>
-              <goal>npm</goal>
+              <goal>yarn</goal>
             </goals>
             <!-- Optional configuration which provides for running any npm command -->
             <configuration>
@@ -83,9 +88,9 @@
 
           <!-- Install all project dependencies -->
           <execution>
-            <id>npm install</id>
+            <id>yarn install</id>
             <goals>
-              <goal>npm</goal>
+              <goal>yarn</goal>
             </goals>
             <!-- optional: default phase is "generate-resources" -->
             <phase>generate-resources</phase>
@@ -97,9 +102,9 @@
 
           <!-- Build and minify static files -->
           <execution>
-            <id>npm run build</id>
+            <id>yarn run build</id>
             <goals>
-              <goal>npm</goal>
+              <goal>yarn</goal>
             </goals>
             <configuration>
               <arguments>run build</arguments>
