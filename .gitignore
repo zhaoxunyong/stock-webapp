@@ -22,7 +22,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 frontend/node/
-/frontend/package.json
 /frontend/dist/
 /backend/log.path_IS_UNDEFINED
 /backend/src/main/resources/public/

@@ -50,8 +50,8 @@
               <goal>install-node-and-npm</goal>
             </goals>
             <configuration>
-              <nodeVersion>v8.9.4</nodeVersion>
-              <npmVersion>5.6.0</npmVersion>
+              <nodeVersion>v8.15.1</nodeVersion>
+              <npmVersion>6.4.1</npmVersion>
               <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
               <npmDownloadRoot>http://registry.npmjs.org/npm/-/</npmDownloadRoot>
             </configuration>
