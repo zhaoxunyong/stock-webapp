@@ -25,6 +25,8 @@ public interface StockService {
 	
 	List<StockMyData> getStockMyDatasByType(Long type);
 	
+	List<StockMyData> getStockMyDatasBySubId(Long subId);
+	
 	List<StockMyStore> getStockMyDatasByStore();
 	
 	StockData getStockData(Long id);
@@ -69,6 +71,8 @@ public interface StockService {
 	
 	void saveAllStockMySelected(List<Long> stockIds, Long selectedType);
 	
+	void saveAllStockMySubSelected(List<Long> stockIds, Long selectedType);
+	
 	void renameStockMydataName(Long selectedType, String name) ;
 	
 	void removeOneStockMySelected(Long stockId, Long selectedType);
@@ -81,7 +85,9 @@ public interface StockService {
 	
 	List<StockData> search4StockData(String value);
     
-    List<StockData> search4StockMyData(String value);
+	List<StockData> search4StockMyData(String value);
+	
+    List<StockData> search4StockMyData4SubType(Long pid, String value);
     
     List<StockNewsKey> getStockNewsKeyByInclude();
     

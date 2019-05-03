@@ -2,13 +2,14 @@ package org.stock.fetch.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.time.DateUtils;
+import com.aeasycredit.commons.lang.idgenerator.IdUtils;
+import com.aeasycredit.commons.lang.utils.ObjectsUtils;
+import com.google.common.collect.Lists;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import org.stock.fetch.dao.StockMyDataMapper;
 import org.stock.fetch.dao.StockMySelectedMapper;
 import org.stock.fetch.dao.StockMySelectedTypeMapper;
 import org.stock.fetch.dao.StockMyStoreMapper;
+import org.stock.fetch.dao.StockMySubSelectedMapper;
 import org.stock.fetch.dao.StockMySubSelectedTypeMapper;
 import org.stock.fetch.dao.StockNewsKeyMapper;
 import org.stock.fetch.dao.StockNewsMapper;
@@ -38,14 +40,12 @@ import org.stock.fetch.model.StockMyData;
 import org.stock.fetch.model.StockMySelected;
 import org.stock.fetch.model.StockMySelectedType;
 import org.stock.fetch.model.StockMyStore;
+import org.stock.fetch.model.StockMySubSelected;
 import org.stock.fetch.model.StockMySubSelectedType;
 import org.stock.fetch.model.StockNews;
 import org.stock.fetch.model.StockNewsKey;
 import org.stock.fetch.service.StockService;
 import org.stock.utils.MyDateUtils;
-
-import com.aeasycredit.commons.lang.idgenerator.IdUtils;
-import com.google.common.collect.Lists;
 
 @Service
 public class StockServiceImpl implements StockService {
@@ -73,6 +73,9 @@ public class StockServiceImpl implements StockService {
     
     @Autowired
     private StockMySelectedMapper stockMySelectedMapper;
+    
+    @Autowired
+    private StockMySubSelectedMapper stockMySubSelectedMapper;
     
     @Autowired
     private StockMyStoreMapper stockMyStoreMapper;
@@ -107,6 +110,11 @@ public class StockServiceImpl implements StockService {
 	@Override
 	public List<StockMyData> getStockMyDatasByType(Long type) {
 		return stockMyDataMapper.getStockMyDatasByType(type);
+	}
+	
+	@Override
+	public List<StockMyData> getStockMyDatasBySubId(Long subId) {
+		return stockMyDataMapper.getStockMyDatasBySubId(subId);
 	}
 
 	@Override
@@ -366,6 +374,42 @@ public class StockServiceImpl implements StockService {
 	        }
 	    }
 	}
+	
+	@Override
+	@Transactional
+	public void saveAllStockMySubSelected(List<Long> stockIds, Long selectedType) {
+        stockMySubSelectedMapper.delete(selectedType);
+        long id = IdUtils.genLongId();
+	    for(Long stockId : stockIds) {
+            // 是否在個股中，沒有的話，需要添加
+            StockMyData stockMyData = stockMyDataMapper.selectByStockId(stockId);
+            if(stockMyData == null) {
+                stockMyData = new StockMyData();
+                stockMyData.setId(IdUtils.genLongId());
+                stockMyData.setStockId(stockId);
+//              stockMyData.setKinds(kinds);
+//              stockMyData.setIndustry(industry);
+                stockMyData.setStatus(true);
+                stockMyData.setCreateDate(new Date());
+                stockMyDataMapper.insert(stockMyData);
+            }
+            
+	        StockMySubSelected stockMySubSelected = stockMySubSelectedMapper.select(stockId, selectedType);
+	        if(stockMySubSelected == null) {
+	            // insert
+	            stockMySubSelected = new StockMySubSelected();
+	            stockMySubSelected.setId(id--);
+	            stockMySubSelected.setSelectedType(selectedType);
+	            stockMySubSelected.setStockId(stockId);
+	            stockMySubSelected.setStatus(true);
+	            stockMySubSelected.setCreateDate(new Date());
+	            stockMySubSelectedMapper.insert(stockMySubSelected);
+	        } else {
+	            // update
+	            stockMySubSelectedMapper.update(stockId, selectedType);
+	        }
+	    }
+	}
 
     @Override
     public void removeOneStockMySelected(Long stockId, Long selectedType) {
@@ -376,13 +420,21 @@ public class StockServiceImpl implements StockService {
 	@Transactional
 	public void removeStockMySelected(Long selectedType) {
 		stockMySelectedMapper.delete(selectedType);
-		stockMySelectedTypeMapper.deleteByType(selectedType);
+        stockMySelectedTypeMapper.deleteByType(selectedType);
+        // 刪除下面的所有的子選股
+        List<StockMySubSelectedType> stockMySubSelectedTypes = stockMySubSelectedTypeMapper.selectByPid(selectedType);
+        if(!ObjectsUtils.isEmpty(stockMySubSelectedTypes)) {
+            for(StockMySubSelectedType stockMySubSelectedType: stockMySubSelectedTypes) {
+                stockMySubSelectedMapper.delete(stockMySubSelectedType.getId());
+                stockMySubSelectedTypeMapper.deleteById(stockMySubSelectedType.getId());
+            }
+        }
 	}
 
 	@Override
 	@Transactional
 	public void removeStockMySubSelected(Long id) {
-		// stockMySubSelectedTypeMapper.delete(id);
+		stockMySubSelectedMapper.delete(id);
 		stockMySubSelectedTypeMapper.deleteById(id);
 	}
 
@@ -399,6 +451,11 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<StockData> search4StockMyData(String value) {
         return stockDataMapper.search4StockMyData(value);
+    }
+
+    @Override
+    public List<StockData> search4StockMyData4SubType(Long pid, String value) {
+        return stockDataMapper.search4StockMyData4SubType(pid, value);
     }
 
     @Override

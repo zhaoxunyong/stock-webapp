@@ -103,6 +103,14 @@
     where a.stock_id=b.id and b.no like concat('%',#{value},'%') or b.company like concat('%',#{value},'%') and b.status = 1
   </select>
   
+  <select id="search4StockMyData4SubType" resultMap="BaseResultMap" >
+    select DISTINCT b.*
+    from stock_my_data a, stock_data b, stock_my_selected c
+    where a.stock_id=b.id and a.stock_id=c.stock_id
+    and c.selected_type=#{pid,jdbcType=BIGINT}
+    and b.no like concat('%',#{value},'%') or b.company like concat('%',#{value},'%') and b.status = 1
+  </select>
+  
   <select id="search4StockData" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select <include refid="BaseColumnList" />
     from stock_data

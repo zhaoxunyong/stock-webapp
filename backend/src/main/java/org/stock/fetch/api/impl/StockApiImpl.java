@@ -152,6 +152,16 @@ public class StockApiImpl implements StockApi {
 	}
 
 	@Override
+    @RequestMapping(value = "/getStockMyDatasBySubId/{subId}", method = GET)
+	public List<StockMyDataDto> getStockMyDatasBySubId(@PathVariable String subId) {
+		List<StockMyData> stockDatas = stockService.getStockMyDatasBySubId(Long.parseLong(subId));
+		List<StockMyDataDto> dtoList = stockDatas.stream().map(model -> {
+			return modelMapper.map(model, StockMyDataDto.class);
+		}).collect(Collectors.toList());
+		return dtoList;
+	}
+
+	@Override
     @RequestMapping(value = "/getStockData/{id}", method = GET)
 	public StockDataDto getStockData(@PathVariable String id) {
 		StockData stockData = stockService.getStockData(Long.parseLong(id));
@@ -393,6 +403,14 @@ public class StockApiImpl implements StockApi {
 		stockService.saveAllStockMySelected(stokIdLongs, Long.parseLong(changeStockMySelectedDto.getSelectedType()));
 	}
 
+	@Override
+    @RequestMapping(value = "/saveAllStockMySubSelected", method = POST)
+	public void saveAllStockMySubSelected(@RequestBody ChangeStockMySelectedDto changeStockMySelectedDto) {
+//		throw new BusinessException("中华人民共和国");
+	    List<Long> stokIdLongs = changeStockMySelectedDto.getStockIds().stream().map(stockId -> Long.parseLong(stockId)).collect(Collectors.toList());
+		stockService.saveAllStockMySubSelected(stokIdLongs, Long.parseLong(changeStockMySelectedDto.getSelectedType()));
+	}
+
     @Override
     @RequestMapping(value = "/renameStockMydataName", method = POST)
     public void renameStockMydataName(String selectedType, String name) {
@@ -480,6 +498,16 @@ public class StockApiImpl implements StockApi {
     @GetMapping("/search4StockMyData")
     public List<StockDataDto> search4StockMyData(String query) {
         List<StockData> stockDatas = stockService.search4StockMyData(query);
+        List<StockDataDto> dtoList = stockDatas.stream().map(model -> {
+            return modelMapper.map(model, StockDataDto.class);
+        }).collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    @GetMapping("/search4StockMyData4SubType")
+    public List<StockDataDto> search4StockMyData4SubType(String pid, String query) {
+        List<StockData> stockDatas = stockService.search4StockMyData4SubType(Long.parseLong(pid), query);
         List<StockDataDto> dtoList = stockDatas.stream().map(model -> {
             return modelMapper.map(model, StockDataDto.class);
         }).collect(Collectors.toList());

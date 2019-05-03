@@ -20,5 +20,7 @@ public interface StockMyDataMapper {
     
     List<StockMyData> getStockMyDatasByType(@Param("type") Long type);
 
+    List<StockMyData> getStockMyDatasBySubId(@Param("subId") Long subId);
+
     int updateByPrimaryKey(StockMyData record);
 }

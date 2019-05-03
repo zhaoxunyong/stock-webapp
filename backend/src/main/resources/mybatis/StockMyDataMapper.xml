@@ -108,4 +108,31 @@
 	GROUP BY a.stock_id
 	ORDER BY c.id DESC
   </select>
+
+  <select id="getStockMyDatasBySubId" resultMap="BaseResultMap">
+    SELECT
+		(select GROUP_CONCAT(
+			selected_type SEPARATOR ','
+		) from stock_my_sub_selected where stock_id = a.stock_id) as selected_types,
+		a.id,
+		b. NO,
+		b.company,
+		a.stock_id,
+		a.kinds,
+		a.industry,
+		a. STATUS,
+		a.create_date,
+		a.update_date
+	FROM
+		stock_my_data a,
+		stock_data b,
+		stock_my_sub_selected c
+	WHERE
+		a.stock_id = b.id
+	AND a.stock_id = c.stock_id
+	AND b.status = 1
+	AND c.selected_type = #{subId,jdbcType=BIGINT}
+	GROUP BY a.stock_id
+	ORDER BY c.id DESC
+  </select>
 </mapper>

@@ -38,6 +38,12 @@ public interface StockApi {
         @ApiImplicitParam(name = "type", value = "type", required = true, dataType = "string", paramType = "path"),
       })
 	public List<StockMyDataDto> getStockMyDatasByType(String type);
+	
+	@ApiOperation(value="getStockMyDatasBySubId", notes="getStockMyDatasBySubId")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "subId", value = "subId", required = true, dataType = "string", paramType = "path"),
+      })
+	public List<StockMyDataDto> getStockMyDatasBySubId(String subId);
     
 //    @ApiOperation(value="getStockMyDatasByTypeReverse", notes="getStockMyDatasByTypeReversal")
 //    @ApiImplicitParams({
@@ -132,6 +138,9 @@ public interface StockApi {
     
     @ApiOperation(value="saveAllStockMySelected", notes="saveAllStockMySelected")
     public void saveAllStockMySelected(ChangeStockMySelectedDto changeStockMySelectedDto);
+    
+    @ApiOperation(value="saveAllStockMySubSelected", notes="saveAllStockMySubSelected")
+    public void saveAllStockMySubSelected(ChangeStockMySelectedDto changeStockMySelectedDto);
 	
 	@ApiOperation(value="renameStockMydataName", notes="renameStockMydataName")
     @ApiImplicitParams({
@@ -184,6 +193,13 @@ public interface StockApi {
         @ApiImplicitParam(name = "query", value = "query", required = true, dataType = "string", paramType = "query")
     })
     public List<StockDataDto> search4StockMyData(String query);
+
+    @ApiOperation(value="search4StockMyData4SubType", notes="search4StockMyData4SubType")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "pid", value = "pid", required = true, dataType = "string", paramType = "query"),
+        @ApiImplicitParam(name = "query", value = "query", required = true, dataType = "string", paramType = "query")
+    })
+    public List<StockDataDto> search4StockMyData4SubType(String pid, String query);
     
     @ApiOperation(value="getStockNewsKeyByInclude", notes="getStockNewsKeyByInclude")
     public List<StockNewsKeyDto> getStockNewsKeyByInclude();

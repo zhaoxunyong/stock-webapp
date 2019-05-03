@@ -23,6 +23,8 @@ public interface StockDataMapper {
     List<StockData> selectAll();
     
     List<StockData> search4StockMyData(@Param("value") String value);
+
+    List<StockData> search4StockMyData4SubType(@Param("pid") Long pid, @Param("value") String value);
     
     List<StockData> search4StockData(@Param("value") String value);
 
