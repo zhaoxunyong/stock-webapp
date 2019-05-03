@@ -29,7 +29,7 @@ public class StockMySubSelectedModel2DtoMapping extends PropertyMapConfigurerSup
             @Override
             protected void configure() {
             	map().setId(String.valueOf(source.getId()));
-            	map().setSelectedType(String.valueOf(source.getSelectedType()));
+            	map().setSubSelectedType(String.valueOf(source.getSubSelectedType()));
                 /*map().setUserId(LongUtils.string2Long(source.getUserId()));
                 map().setLoanRequestNo(LongUtils.string2Long(source.getLoanRequestNo()));
                 map().setRequestId(LongUtils.string2Long(source.getRequestId()));

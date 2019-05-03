@@ -12,7 +12,7 @@ public class StockMySubSelected extends BaseModel {
 
     private Long stockId;
 
-    private Long selectedType;
+    private Long subSelectedType;
 
     private Boolean status;
 
@@ -36,12 +36,13 @@ public class StockMySubSelected extends BaseModel {
         this.stockId = stockId;
     }
 
-    public Long getSelectedType() {
-        return selectedType;
+
+    public Long getSubSelectedType() {
+        return this.subSelectedType;
     }
 
-    public void setSelectedType(Long selectedType) {
-        this.selectedType = selectedType;
+    public void setSubSelectedType(Long subSelectedType) {
+        this.subSelectedType = subSelectedType;
     }
 
     public Boolean getStatus() {

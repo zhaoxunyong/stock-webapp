@@ -382,8 +382,8 @@ public class StockServiceImpl implements StockService {
 	
 	@Override
 	@Transactional
-	public void saveAllStockMySubSelected(List<Long> stockIds, Long selectedType) {
-        stockMySubSelectedMapper.delete(selectedType);
+	public void saveAllStockMySubSelected(List<Long> stockIds, Long subSelectedType) {
+        stockMySubSelectedMapper.delete(subSelectedType);
         long id = IdUtils.genLongId();
 	    for(Long stockId : stockIds) {
             // 是否在個股中，沒有的話，需要添加
@@ -399,21 +399,52 @@ public class StockServiceImpl implements StockService {
                 stockMyDataMapper.insert(stockMyData);
             }
             
-	        StockMySubSelected stockMySubSelected = stockMySubSelectedMapper.select(stockId, selectedType);
+	        StockMySubSelected stockMySubSelected = stockMySubSelectedMapper.select(stockId, subSelectedType);
 	        if(stockMySubSelected == null) {
 	            // insert
 	            stockMySubSelected = new StockMySubSelected();
 	            stockMySubSelected.setId(id--);
-	            stockMySubSelected.setSelectedType(selectedType);
+	            stockMySubSelected.setSubSelectedType(subSelectedType);
 	            stockMySubSelected.setStockId(stockId);
 	            stockMySubSelected.setStatus(true);
 	            stockMySubSelected.setCreateDate(new Date());
 	            stockMySubSelectedMapper.insert(stockMySubSelected);
 	        } else {
 	            // update
-	            stockMySubSelectedMapper.update(stockId, selectedType);
+                stockMySubSelectedMapper.update(stockId, subSelectedType);
+                 
 	        }
 	    }
+	}
+	
+	@Override
+	@Transactional
+	public void saveStockMySubSelected(List<Long> subSelectedTypes, Long currSelectedType, Long stockId) {
+        // 刪除下面的所有的子選股
+        List<StockMySubSelectedType> stockMySubSelectedTypes = stockMySubSelectedTypeMapper.selectByPid(currSelectedType);
+        if(!ObjectsUtils.isEmpty(stockMySubSelectedTypes)) {
+            for(StockMySubSelectedType stockMySubSelectedType: stockMySubSelectedTypes) {
+                stockMySubSelectedMapper.deleteByStockId(stockId, stockMySubSelectedType.getId());
+            }
+        }
+        long id = IdUtils.genLongId();
+        for(Long subSelectedType : subSelectedTypes) {
+            StockMySubSelected stockMySubSelected = stockMySubSelectedMapper.select(stockId, subSelectedType);
+	        if(stockMySubSelected == null) {
+	            // insert
+	            stockMySubSelected = new StockMySubSelected();
+	            stockMySubSelected.setId(id--);
+	            stockMySubSelected.setSubSelectedType(subSelectedType);
+	            stockMySubSelected.setStockId(stockId);
+	            stockMySubSelected.setStatus(true);
+	            stockMySubSelected.setCreateDate(new Date());
+	            stockMySubSelectedMapper.insert(stockMySubSelected);
+	        } else {
+	            // update
+                stockMySubSelectedMapper.update(stockId, subSelectedType);
+                 
+	        }
+        }
 	}
 
     @Override

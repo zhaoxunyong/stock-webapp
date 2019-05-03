@@ -73,7 +73,9 @@ public interface StockService {
 	
 	void saveAllStockMySelected(List<Long> stockIds, Long selectedType);
 	
-	void saveAllStockMySubSelected(List<Long> stockIds, Long selectedType);
+	void saveAllStockMySubSelected(List<Long> stockIds, Long subSelectedType);
+	
+	void saveStockMySubSelected(List<Long> subSelectedTypes, Long currSelectedType, Long stockId);
 	
 	void renameStockMydataName(Long selectedType, String name) ;
 	

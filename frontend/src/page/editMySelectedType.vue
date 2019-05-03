@@ -328,9 +328,11 @@ export default {
             stockIds.push(inputValue);
           }
         });
+        // TODO: bug：当没有一条时不能删除
         if (stockIds.length > 0) {
           let url = "/api/stock/saveAllStockMySubSelected";
           let params = {
+            // selectedType是子选股的类型Id
             selectedType: this.currSubSelectedType,
             stockIds: stockIds
           };
@@ -349,6 +351,7 @@ export default {
               stockIds.push(inputValue);
             }
           });
+          // TODO: bug：当没有一条时不能删除
           if (stockIds.length > 0) {
             let url = "/api/stock/saveAllStockMySelected";
             let params = {

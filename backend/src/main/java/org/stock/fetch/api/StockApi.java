@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import org.stock.fetch.api.dto.ChangeStockMySelectedDto;
 import org.stock.fetch.api.dto.ChangeStockMySelectedTypeParams;
+import org.stock.fetch.api.dto.ChangeStockMySubSelectedDto;
 import org.stock.fetch.api.dto.PageDto;
 import org.stock.fetch.api.dto.StockDailyTransactionsDto;
 import org.stock.fetch.api.dto.StockDataDto;
@@ -144,6 +145,9 @@ public interface StockApi {
     
     @ApiOperation(value="saveAllStockMySubSelected", notes="saveAllStockMySubSelected")
     public void saveAllStockMySubSelected(ChangeStockMySelectedDto changeStockMySelectedDto);
+    
+    @ApiOperation(value="saveStockMySubSelected", notes="saveStockMySubSelected")
+    public void saveStockMySubSelected(ChangeStockMySubSelectedDto changeStockMySubSelectedDto);
 	
 	@ApiOperation(value="renameStockMydataName", notes="renameStockMydataName")
     @ApiImplicitParams({

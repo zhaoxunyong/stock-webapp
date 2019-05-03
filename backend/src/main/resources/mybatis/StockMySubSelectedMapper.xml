@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="org.stock.fetch.model.StockMySubSelected" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="stock_id" property="stockId" jdbcType="BIGINT" />
-    <result column="selected_type" property="selectedType" jdbcType="BIGINT" />
+    <result column="sub_selected_type" property="subSelectedType" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="BIT" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="BaseColumnList">
-    id, stock_id, selected_type, status, create_date, update_date
+    id, stock_id, sub_selected_type, status, create_date, update_date
   </sql>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -20,30 +20,30 @@
   
   <delete id="delete" >
     delete from stock_my_sub_selected
-    where selected_type = #{selectedType,jdbcType=BIGINT}
+    where sub_selected_type = #{subSelectedType,jdbcType=BIGINT}
   </delete>
   
   <delete id="deleteByStockId" >
     delete from stock_my_sub_selected
-    where stock_id = #{stockId,jdbcType=BIGINT} and selected_type = #{selectedType,jdbcType=BIGINT}
+    where stock_id = #{stockId,jdbcType=BIGINT} and sub_selected_type = #{subSelectedType,jdbcType=BIGINT}
   </delete>
   
   <delete id="removeOneStockMySelected" >
     delete from stock_my_sub_selected
-    where stock_id = #{stockId,jdbcType=BIGINT} and selected_type = #{selectedType,jdbcType=BIGINT}
+    where stock_id = #{stockId,jdbcType=BIGINT} and sub_selected_type = #{subSelectedType,jdbcType=BIGINT}
   </delete>
   
   <insert id="insert" parameterType="org.stock.fetch.model.StockMySelected" useGeneratedKeys="true" keyProperty="id" >
-    insert into stock_my_sub_selected (id, stock_id, selected_type, status, 
+    insert into stock_my_sub_selected (id, stock_id, sub_selected_type, status, 
       create_date, update_date)
-    values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{selectedType,jdbcType=BIGINT}, #{status,jdbcType=BIT}, 
+    values (#{id,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{subSelectedType,jdbcType=BIGINT}, #{status,jdbcType=BIT}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   
   <update id="updateByPrimaryKey" parameterType="org.stock.fetch.model.StockMySelected" >
     update stock_my_sub_selected
     set stock_id = #{stockId,jdbcType=BIGINT},
-      selected_type = #{selectedType,jdbcType=BIGINT},
+      sub_selected_type = #{subSelectedType,jdbcType=BIGINT},
       status = #{status,jdbcType=BIT},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP}
@@ -52,8 +52,8 @@
   
   <update id="update" >
     update stock_my_sub_selected
-    set selected_type = #{selectedType,jdbcType=BIGINT}
-    where stock_id = #{stockId,jdbcType=BIGINT} and selected_type = #{selectedType,jdbcType=BIGINT}
+    set sub_selected_type = #{subSelectedType,jdbcType=BIGINT}
+    where stock_id = #{stockId,jdbcType=BIGINT} and sub_selected_type = #{subSelectedType,jdbcType=BIGINT}
   </update>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -65,13 +65,13 @@
   <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select <include refid="BaseColumnList" />
     from stock_my_sub_selected
-    where selected_type = #{selectedType,jdbcType=BIGINT}
+    where sub_selected_type = #{subSelectedType,jdbcType=BIGINT}
   </select>
   
   <select id="select" resultMap="BaseResultMap" >
     select <include refid="BaseColumnList" />
     from stock_my_sub_selected
-    where stock_id = #{stockId,jdbcType=BIGINT} and selected_type = #{selectedType,jdbcType=BIGINT}
+    where stock_id = #{stockId,jdbcType=BIGINT} and sub_selected_type = #{subSelectedType,jdbcType=BIGINT}
   </select>
   
   <select id="selectAll" resultMap="BaseResultMap" >

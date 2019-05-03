@@ -12,7 +12,7 @@ public class StockMySubSelectedDto extends BaseDto {
 
     private String stockId;
 
-    private String selectedType;
+    private String subSelectedType;
 
     private Boolean status;
 
@@ -36,12 +36,12 @@ public class StockMySubSelectedDto extends BaseDto {
         this.stockId = stockId;
     }
 
-    public String getSelectedType() {
-        return selectedType;
+    public String getSubSelectedType() {
+        return this.subSelectedType;
     }
 
-    public void setSelectedType(String selectedType) {
-        this.selectedType = selectedType;
+    public void setSubSelectedType(String subSelectedType) {
+        this.subSelectedType = subSelectedType;
     }
 
     public Boolean getStatus() {

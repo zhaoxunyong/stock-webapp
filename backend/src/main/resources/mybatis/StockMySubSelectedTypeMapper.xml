@@ -53,7 +53,7 @@
   
   <select id="selectByStockId" resultMap="BaseResultMap" >
     select DISTINCT a.* from stock_my_sub_selected_type a, stock_my_sub_selected b 
-    where a.id=b.selected_type and b.stock_id=#{stockId,jdbcType=BIGINT}
+    where a.id=b.sub_selected_type and b.stock_id=#{stockId,jdbcType=BIGINT}
   </select>
     
 </mapper>

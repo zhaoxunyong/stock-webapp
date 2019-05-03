@@ -35,6 +35,7 @@ import org.stock.fetch.api.StockApi;
 import org.stock.fetch.api.dto.ChangeStockMySelectedDto;
 import org.stock.fetch.api.dto.ChangeStockMySelectedTypeDto;
 import org.stock.fetch.api.dto.ChangeStockMySelectedTypeParams;
+import org.stock.fetch.api.dto.ChangeStockMySubSelectedDto;
 import org.stock.fetch.api.dto.PageDto;
 import org.stock.fetch.api.dto.StockDailyTransactionsDto;
 import org.stock.fetch.api.dto.StockDataDto;
@@ -418,7 +419,17 @@ public class StockApiImpl implements StockApi {
 	public void saveAllStockMySubSelected(@RequestBody ChangeStockMySelectedDto changeStockMySelectedDto) {
 //		throw new BusinessException("中华人民共和国");
 	    List<Long> stokIdLongs = changeStockMySelectedDto.getStockIds().stream().map(stockId -> Long.parseLong(stockId)).collect(Collectors.toList());
-		stockService.saveAllStockMySubSelected(stokIdLongs, Long.parseLong(changeStockMySelectedDto.getSelectedType()));
+        // // selectedType是子选股的类型Id
+        stockService.saveAllStockMySubSelected(stokIdLongs, Long.parseLong(changeStockMySelectedDto.getSelectedType()));
+	}
+
+	@Override
+    @RequestMapping(value = "/saveStockMySubSelected", method = POST)
+	public void saveStockMySubSelected(@RequestBody ChangeStockMySubSelectedDto changeStockMySubSelectedDto) {
+//		throw new BusinessException("中华人民共和国");
+	    List<Long> selectedTypes = changeStockMySubSelectedDto.getSubSelectedType().stream().map(selectedType -> Long.parseLong(selectedType)).collect(Collectors.toList());
+        Long currSelectedType = Long.parseLong(changeStockMySubSelectedDto.getCurrSelectedType());
+        stockService.saveStockMySubSelected(selectedTypes, currSelectedType, Long.parseLong(changeStockMySubSelectedDto.getStockId()));
 	}
 
     @Override

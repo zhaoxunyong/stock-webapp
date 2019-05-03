@@ -14,15 +14,15 @@ public interface StockMySubSelectedMapper {
 
     StockMySubSelected selectByPrimaryKey(Long id);
     
-    StockMySubSelected select(@Param("stockId") Long stockId, @Param("selectedType") Long selectedType);
+    StockMySubSelected select(@Param("stockId") Long stockId, @Param("subSelectedType") Long subSelectedType);
 
-    int update(@Param("stockId") Long stockId, @Param("selectedType") Long selectedType);
+    int update(@Param("stockId") Long stockId, @Param("subSelectedType") Long subSelectedType);
     
-    int delete(@Param("selectedType") Long selectedType);
+    int delete(@Param("subSelectedType") Long subSelectedType);
     
-    int deleteByStockId(@Param("stockId") Long stockId,@Param("selectedType") Long selectedType);
+    int deleteByStockId(@Param("stockId") Long stockId,@Param("subSelectedType") Long subSelectedType);
     
-    int removeOneStockMySelected(@Param("stockId") Long stockId, @Param("selectedType") Long selectedType);
+    int removeOneStockMySelected(@Param("stockId") Long stockId, @Param("subSelectedType") Long subSelectedType);
 
     List<StockMySubSelected> selectAll();
     

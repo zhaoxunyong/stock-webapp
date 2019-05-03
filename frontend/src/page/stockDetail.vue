@@ -57,7 +57,7 @@
               :id="'inlineCheckbox'+item.id"
               :value="item.id"
               @click="changedValue(item.id)"
-              :checked="subSelectedItems.indexOf(item.id) != 0?'true':''"
+              :checked="subSelectedItems.length > 0 && subSelectedItems.indexOf(item.id) != -1?'checked':''"
             >
             <label class="form-check-label" for="inlineCheckbox1">{{item.name}}</label>
           </div>
@@ -116,6 +116,8 @@ export default {
       this.currSelectedType = type;
       this.currSelectedName = name;
       this.getSubData(this.currSelectedType);
+      this.stockId = this.$route.params.stockId;
+      this.getSelectedSubData(this.stockId);
     });
   },
   mounted() {},
@@ -123,15 +125,18 @@ export default {
     changedValue(value) {
       this.stockId = this.$route.params.stockId;
       let _this = this;
+      let vals = [];
       $(".form-check-input[type=checkbox]:checked").each(function() {
-        let url = "/api/stock/saveAllStockMySubSelected";
         let pid = $(this).val();
-        let params = {
-          selectedType: pid,
-          stockIds: [_this.stockId]
-        };
-        _this.$api.post(url, params);
+        vals.push(pid);
       });
+      let url = "/api/stock/saveStockMySubSelected";
+      let params = {
+        currSelectedType: this.currSelectedType,
+        stockId: _this.stockId,
+        subSelectedType: vals
+      };
+      _this.$api.post(url, params);
     },
     removeOneStockMySelected() {
       this.stockId = this.$route.params.stockId;
@@ -219,14 +224,16 @@ export default {
       }
     },
     getSelectedSubData(stockId) {
-      this.subSelectedItems = [];
-      let url = `/api/stock/getStockMySubSelectedTypesByStockId?stockId=${stockId}`;
-      this.$api.get(url, null, rs => {
-        for (let i = 0; i < rs.length; i++) {
-          let r = rs[i];
-          this.subSelectedItems.push(r.id);
-        }
-      });
+      if (stockId) {
+        this.subSelectedItems = [];
+        let url = `/api/stock/getStockMySubSelectedTypesByStockId?stockId=${stockId}`;
+        this.$api.get(url, null, rs => {
+          for (let i = 0; i < rs.length; i++) {
+            let r = rs[i];
+            this.subSelectedItems.push(r.id);
+          }
+        });
+      }
     }
   },
   watch: {
@@ -247,5 +254,6 @@ export default {
   float: right;
   position: relative;
   top: -30px;
+  left: -16%;
 }
 </style>
