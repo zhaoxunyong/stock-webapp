@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.stock.fetch.dao.StockMySubSelectedTypeMapper" >
+  <resultMap id="BaseResultMap" type="org.stock.fetch.model.StockMySubSelectedType" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="BaseColumnList">
+    id, pid, name, create_date, update_date
+  </sql>
+  
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from stock_my_sub_selected_type
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteAll">
+    delete from stock_my_sub_selected_type
+  </delete>
+  
+  <insert id="insert" parameterType="org.stock.fetch.model.StockMySubSelectedType" useGeneratedKeys="true" keyProperty="id" >
+    insert into stock_my_sub_selected_type (id, pid, name, create_date, 
+      update_date)
+    values (#{id,jdbcType=BIGINT}, #{pid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="org.stock.fetch.model.StockMySubSelectedType" >
+    update stock_my_sub_selected_type
+    set pid = #{pid,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select <include refid="BaseColumnList" />
+    from stock_my_sub_selected_type
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByPid" resultMap="BaseResultMap" >
+    select <include refid="BaseColumnList" />
+    from stock_my_sub_selected_type 
+    where pid=#{pid,jdbcType=BIGINT}
+    order by create_date asc
+  </select>
+    
+</mapper>

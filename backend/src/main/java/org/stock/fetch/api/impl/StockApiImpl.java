@@ -44,6 +44,7 @@ import org.stock.fetch.api.dto.StockLineSettingsDto;
 import org.stock.fetch.api.dto.StockMyDataDto;
 import org.stock.fetch.api.dto.StockMySelectedTypeDto;
 import org.stock.fetch.api.dto.StockMyStoreDto;
+import org.stock.fetch.api.dto.StockMySubSelectedTypeDto;
 import org.stock.fetch.api.dto.StockNewsDto;
 import org.stock.fetch.api.dto.StockNewsKeyDto;
 import org.stock.fetch.constant.StockHistoryEnum;
@@ -57,6 +58,7 @@ import org.stock.fetch.model.StockLineSettings;
 import org.stock.fetch.model.StockMyData;
 import org.stock.fetch.model.StockMySelectedType;
 import org.stock.fetch.model.StockMyStore;
+import org.stock.fetch.model.StockMySubSelectedType;
 import org.stock.fetch.model.StockNews;
 import org.stock.fetch.model.StockNewsKey;
 import org.stock.fetch.service.FetchService;
@@ -324,6 +326,16 @@ public class StockApiImpl implements StockApi {
 	}
 
 	@Override
+    @RequestMapping(value = "/getStockMySubSelectedTypes", method = GET)
+	public List<StockMySubSelectedTypeDto> getStockMySubSelectedTypes(String pid) {
+		List<StockMySubSelectedType> stockMySubSelectedTypes = stockService.getStockMySubSelectedTypes(Long.parseLong(pid));
+		List<StockMySubSelectedTypeDto> dtoList = stockMySubSelectedTypes.stream().map(model -> {
+			return modelMapper.map(model, StockMySubSelectedTypeDto.class);
+		}).collect(Collectors.toList());
+		return dtoList;
+	}
+
+	@Override
     @RequestMapping(value = "/getMySelectedTypesByStockId/{stockId}", method = GET)
 	public List<StockMySelectedTypeDto> getMySelectedTypesByStockId(@PathVariable String stockId) {
 		List<StockMySelectedType> stockMySelectedTypes = stockService.getMySelectedTypesByStockId(Long.parseLong(stockId));
@@ -342,6 +354,17 @@ public class StockApiImpl implements StockApi {
 		stockMySelectedType.setName(name);
 		stockMySelectedType.setCreateDate(new Date());
 		stockService.saveStockMySelectedType(stockMySelectedType);
+	}
+
+	@Override
+    @RequestMapping(value = "/saveStockMySubSelectedType", method = POST)
+	public void saveStockMySubSelectedType(String pid, String name) {
+		StockMySubSelectedType stockMySubSelectedType = new StockMySubSelectedType();
+		stockMySubSelectedType.setId(IdUtils.genLongId());
+		stockMySubSelectedType.setPid(Long.parseLong(pid));
+		stockMySubSelectedType.setName(name);
+		stockMySubSelectedType.setCreateDate(new Date());
+		stockService.saveStockMySubSelectedType(stockMySubSelectedType);
 	}
 
     @Override
@@ -386,6 +409,12 @@ public class StockApiImpl implements StockApi {
     @RequestMapping(value = "/removeStockMySelected", method = POST)
 	public void removeStockMySelected(String selectedType) {
 		stockService.removeStockMySelected(Long.parseLong(selectedType));
+	}
+
+	@Override
+    @RequestMapping(value = "/removeStockMySubSelected", method = POST)
+	public void removeStockMySubSelected(String id) {
+		stockService.removeStockMySubSelected(Long.parseLong(id));
 	}
 	
 	@PostMapping("/uploadStockDailyTransactions")  

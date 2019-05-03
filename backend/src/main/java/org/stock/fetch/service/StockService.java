@@ -14,6 +14,7 @@ import org.stock.fetch.model.StockLineSettings;
 import org.stock.fetch.model.StockMyData;
 import org.stock.fetch.model.StockMySelectedType;
 import org.stock.fetch.model.StockMyStore;
+import org.stock.fetch.model.StockMySubSelectedType;
 import org.stock.fetch.model.StockNews;
 import org.stock.fetch.model.StockNewsKey;
 
@@ -54,9 +55,13 @@ public interface StockService {
 	
 	List<StockMySelectedType> getStockMySelectedTypes();
 	
+	List<StockMySubSelectedType> getStockMySubSelectedTypes(Long pid);
+	
 	List<StockMySelectedType> getMySelectedTypesByStockId(Long stockId);
 	
 	void saveStockMySelectedType(StockMySelectedType stockMySelectedType);
+
+	void saveStockMySubSelectedType(StockMySubSelectedType stockMySubSelectedType);
 	
 	void changeStockMySelected(List<Long> stockIds, Long selectedType);
     
@@ -69,6 +74,8 @@ public interface StockService {
 	void removeOneStockMySelected(Long stockId, Long selectedType);
 	
 	void removeStockMySelected(Long selectedType);
+	
+	void removeStockMySubSelected(Long id);
 	
 	List<StockDailyTransactions> getStockDailyTransactions(Date startDate, Date endDate);
 	

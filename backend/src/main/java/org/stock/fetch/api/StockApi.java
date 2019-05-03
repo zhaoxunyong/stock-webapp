@@ -15,6 +15,7 @@ import org.stock.fetch.api.dto.StockLineSettingsDto;
 import org.stock.fetch.api.dto.StockMyDataDto;
 import org.stock.fetch.api.dto.StockMySelectedTypeDto;
 import org.stock.fetch.api.dto.StockMyStoreDto;
+import org.stock.fetch.api.dto.StockMySubSelectedTypeDto;
 import org.stock.fetch.api.dto.StockNewsDto;
 import org.stock.fetch.api.dto.StockNewsKeyDto;
 
@@ -101,6 +102,9 @@ public interface StockApi {
 	@ApiOperation(value="getStockMySelectedTypes", notes="getStockMySelectedTypes")
 	public List<StockMySelectedTypeDto> getStockMySelectedTypes();
 	
+	@ApiOperation(value="getStockMySubSelectedTypes", notes="getStockMySubSelectedTypes")
+	public List<StockMySubSelectedTypeDto> getStockMySubSelectedTypes(String pid);
+	
 	@ApiOperation(value="getMySelectedTypesByStockId", notes="getMySelectedTypesByStockId")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "stockId", value = "stockId", required = true, dataType = "string", paramType = "path")
@@ -112,6 +116,13 @@ public interface StockApi {
 		@ApiImplicitParam(name = "name", value = "name", required = true, dataType = "string", paramType = "query"),
 	})
 	public void saveStockMySelectedType(String name);
+	
+	@ApiOperation(value="saveStockMySubSelectedType", notes="saveStockMySubSelectedType")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "pid", value = "pid", required = true, dataType = "string", paramType = "query"),
+		@ApiImplicitParam(name = "name", value = "name", required = true, dataType = "string", paramType = "query"),
+	})
+	public void saveStockMySubSelectedType(String pid, String name);
 	
 	@ApiOperation(value="changeStockMySelected", notes="changeStockMySelected")
 	public void changeStockMySelected(ChangeStockMySelectedDto changeStockMySelectedDto);
@@ -142,6 +153,12 @@ public interface StockApi {
 		@ApiImplicitParam(name = "selectedType", value = "selectedType", required = true, dataType = "string", paramType = "query"),
 	})
 	public void removeStockMySelected(String selectedType);
+	
+	@ApiOperation(value="removeStockMySubSelected", notes="removeStockMySubSelected")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "id", value = "id", required = true, dataType = "string", paramType = "query"),
+	})
+	public void removeStockMySubSelected(String id);
 	
 	@ApiOperation(value="uploadStockDailyTransactions", notes="uploadStockDailyTransactions")
 	@ApiImplicitParams({

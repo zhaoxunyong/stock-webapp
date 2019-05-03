@@ -24,6 +24,7 @@ import org.stock.fetch.dao.StockMyDataMapper;
 import org.stock.fetch.dao.StockMySelectedMapper;
 import org.stock.fetch.dao.StockMySelectedTypeMapper;
 import org.stock.fetch.dao.StockMyStoreMapper;
+import org.stock.fetch.dao.StockMySubSelectedTypeMapper;
 import org.stock.fetch.dao.StockNewsKeyMapper;
 import org.stock.fetch.dao.StockNewsMapper;
 import org.stock.fetch.model.ChangeStockMySelectedType;
@@ -37,6 +38,7 @@ import org.stock.fetch.model.StockMyData;
 import org.stock.fetch.model.StockMySelected;
 import org.stock.fetch.model.StockMySelectedType;
 import org.stock.fetch.model.StockMyStore;
+import org.stock.fetch.model.StockMySubSelectedType;
 import org.stock.fetch.model.StockNews;
 import org.stock.fetch.model.StockNewsKey;
 import org.stock.fetch.service.StockService;
@@ -62,6 +64,9 @@ public class StockServiceImpl implements StockService {
     
     @Autowired
     private StockMySelectedTypeMapper stockMySelectedTypeMapper;
+    
+    @Autowired
+    private StockMySubSelectedTypeMapper stockMySubSelectedTypeMapper;
     
     @Autowired
     private StockDailyTransactionsMapper stockDailyTransactionsMapper;
@@ -248,6 +253,11 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
+	public List<StockMySubSelectedType> getStockMySubSelectedTypes(Long pid) {
+		return stockMySubSelectedTypeMapper.selectByPid(pid);
+	}
+
+	@Override
 	public List<StockMySelectedType> getMySelectedTypesByStockId(Long stockId) {
 		return stockMySelectedTypeMapper.selectByStockId(stockId);
 	}
@@ -256,6 +266,12 @@ public class StockServiceImpl implements StockService {
 	@Transactional
 	public void saveStockMySelectedType(StockMySelectedType stockMySelectedType) {
 		stockMySelectedTypeMapper.insert(stockMySelectedType);
+	}
+
+	@Override
+	@Transactional
+	public void saveStockMySubSelectedType(StockMySubSelectedType stockSubMySelectedType) {
+		stockMySubSelectedTypeMapper.insert(stockSubMySelectedType);
 	}
 
     @Override
@@ -361,6 +377,13 @@ public class StockServiceImpl implements StockService {
 	public void removeStockMySelected(Long selectedType) {
 		stockMySelectedMapper.delete(selectedType);
 		stockMySelectedTypeMapper.deleteByType(selectedType);
+	}
+
+	@Override
+	@Transactional
+	public void removeStockMySubSelected(Long id) {
+		// stockMySubSelectedTypeMapper.delete(id);
+		stockMySubSelectedTypeMapper.deleteById(id);
 	}
 
 	@Override
