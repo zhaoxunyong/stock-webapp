@@ -14,4 +14,6 @@ public interface StockMySubSelectedTypeMapper {
 
     List<StockMySubSelectedType> selectByPid(Long pid);
 
+    List<StockMySubSelectedType> selectByStockId(Long stockId);
+
 }

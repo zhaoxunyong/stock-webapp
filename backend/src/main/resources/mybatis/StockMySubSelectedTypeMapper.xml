@@ -50,5 +50,10 @@
     where pid=#{pid,jdbcType=BIGINT}
     order by create_date asc
   </select>
+  
+  <select id="selectByStockId" resultMap="BaseResultMap" >
+    select DISTINCT a.* from stock_my_sub_selected_type a, stock_my_sub_selected b 
+    where a.id=b.selected_type and b.stock_id=#{stockId,jdbcType=BIGINT}
+  </select>
     
 </mapper>

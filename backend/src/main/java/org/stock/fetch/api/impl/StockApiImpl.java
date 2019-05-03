@@ -346,6 +346,16 @@ public class StockApiImpl implements StockApi {
 	}
 
 	@Override
+    @RequestMapping(value = "/getStockMySubSelectedTypesByStockId", method = GET)
+	public List<StockMySubSelectedTypeDto> getStockMySubSelectedTypesByStockId(String stockId) {
+		List<StockMySubSelectedType> stockMySubSelectedTypes = stockService.getStockMySubSelectedTypesByStockId(Long.parseLong(stockId));
+		List<StockMySubSelectedTypeDto> dtoList = stockMySubSelectedTypes.stream().map(model -> {
+			return modelMapper.map(model, StockMySubSelectedTypeDto.class);
+		}).collect(Collectors.toList());
+		return dtoList;
+	}
+
+	@Override
     @RequestMapping(value = "/getMySelectedTypesByStockId/{stockId}", method = GET)
 	public List<StockMySelectedTypeDto> getMySelectedTypesByStockId(@PathVariable String stockId) {
 		List<StockMySelectedType> stockMySelectedTypes = stockService.getMySelectedTypesByStockId(Long.parseLong(stockId));

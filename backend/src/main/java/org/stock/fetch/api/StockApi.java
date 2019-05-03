@@ -111,6 +111,9 @@ public interface StockApi {
 	@ApiOperation(value="getStockMySubSelectedTypes", notes="getStockMySubSelectedTypes")
 	public List<StockMySubSelectedTypeDto> getStockMySubSelectedTypes(String pid);
 	
+	@ApiOperation(value="getStockMySubSelectedTypesByStockId", notes="getStockMySubSelectedTypesByStockId")
+	public List<StockMySubSelectedTypeDto> getStockMySubSelectedTypesByStockId(String stockId);
+	
 	@ApiOperation(value="getMySelectedTypesByStockId", notes="getMySelectedTypesByStockId")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "stockId", value = "stockId", required = true, dataType = "string", paramType = "path")

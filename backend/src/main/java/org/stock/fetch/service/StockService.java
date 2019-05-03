@@ -59,6 +59,8 @@ public interface StockService {
 	
 	List<StockMySubSelectedType> getStockMySubSelectedTypes(Long pid);
 	
+	List<StockMySubSelectedType> getStockMySubSelectedTypesByStockId(Long stockId);
+	
 	List<StockMySelectedType> getMySelectedTypesByStockId(Long stockId);
 	
 	void saveStockMySelectedType(StockMySelectedType stockMySelectedType);

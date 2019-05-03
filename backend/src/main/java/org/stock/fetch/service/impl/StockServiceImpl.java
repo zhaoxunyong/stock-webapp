@@ -266,6 +266,11 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
+	public List<StockMySubSelectedType> getStockMySubSelectedTypesByStockId(Long stockId) {
+		return stockMySubSelectedTypeMapper.selectByStockId(stockId);
+	}
+
+	@Override
 	public List<StockMySelectedType> getMySelectedTypesByStockId(Long stockId) {
 		return stockMySelectedTypeMapper.selectByStockId(stockId);
 	}
