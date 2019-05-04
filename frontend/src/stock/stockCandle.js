@@ -11,14 +11,13 @@ import utils from '../utils/index.js'
 let BB = require('technicalindicators').BollingerBands
 
 export default function getData(chartObj, datasets, kineType) {
-    let kDisplay = kineType == 1 ? "月" : "日"
+    let kDisplay = kineType == 1 ? '月' : '日'
     let datas = stockUtils.splitData(datasets)
 
     let inputBoll = {
-        period : 20, 
-        values : stockUtils.getCloses(datas),
-        stdDev : 2
-
+        period: 20,
+        values: stockUtils.getCloses(datas),
+        stdDev: 2
     }
     let bolls = BB.calculate(inputBoll)
     let lowers = stockUtils.getBollLowers(bolls)
@@ -44,15 +43,15 @@ export default function getData(chartObj, datasets, kineType) {
         // backgroundColor: '#21202D',
         // 提示框浮层的位置
         animation: false,
-        tooltip : {
+        tooltip: {
             trigger: 'axis',
             backgroundColor: 'black',
-            position : [0, 0],
+            position: [0, 0],
             // extraCssText:'width:100px;height:60px;',
             // formatter: "Series formatter: <br/>{a}<br/>{b}<br/>{c}",
             // 数据结构：dataIndex/opening/closing/lowest/highest/vol
             // formatter: "{b} 收 {c2} 開 {c1} 高 {c4} 低 {c3}",
-            formatter: function (params) {
+            formatter: function(params) {
                 // rs[i].opening, rs[i].closing, rs[i].lowest, rs[i].highest, rs[i].vol, rs[i].riseRate
                 // let data0 = stockUtils.getSeriesIndex(params,0)
                 // 83, 72.5, 70, 67, 73.8, "16032"
@@ -62,13 +61,13 @@ export default function getData(chartObj, datasets, kineType) {
                 低: ${params[0].data[3]}
                 收: ${params[0].data[2]}<br/>
                 ${kDisplay}線 
-                <font color="${STOCK_CONFIG.col.m5}">M5:</font> ${params[1].value} 
-                <font color="${STOCK_CONFIG.col.m10}">M10:</font> ${params[2].value} 
-                <font color="${STOCK_CONFIG.col.m20}">M20:</font> ${params[3].value} 
-                <font color="${STOCK_CONFIG.col.m60}">M60:</font> ${params[4].value}`
-                $("#tooltipId1"+kineType).html(v)
+                <font color="${STOCK_CONFIG.col.m5}">M5: ${params[1].value}</font> 
+                <font color="${STOCK_CONFIG.col.m10}">M10: ${params[2].value}</font> 
+                <font color="${STOCK_CONFIG.col.m20}">M20: ${params[3].value}</font> 
+                <font color="${STOCK_CONFIG.col.m60}">M60: ${params[4].value}</font>`
+                $('#tooltipId1' + kineType).html(v)
                 // return `<font color="read">${params[0].data}</font>`;
-                return "";
+                return ''
             },
             axisPointer: {
                 type: 'cross',
@@ -96,12 +95,14 @@ export default function getData(chartObj, datasets, kineType) {
                 '布林通道2', 
                 '布林通道3',]
         }, */
-        grid: [{
-            top: '4%',
-            left: '2%',
-            right: '6%',
-            height: '88%'
-        }],
+        grid: [
+            {
+                top: '4%',
+                left: '2%',
+                right: '6%',
+                height: '88%'
+            }
+        ],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
             link: {
@@ -111,98 +112,119 @@ export default function getData(chartObj, datasets, kineType) {
             // mouse动时坐标处的文字
             label: {
                 backgroundColor: '#777'
-            },
+            }
             // triggerOn:'click'
         },
         // 上下两个图表的x轴数据
-        xAxis: [{
-            type: 'category',
-            data: stockUtils.getSlice(datas.categoryData),
-            // 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
-            boundaryGap: true,
-            // 坐标文字内容
-            axisLabel: {
-                show: false,
-                onZero: false,
-                // 坐标文字相关样式
-                textStyle: {
-                    fontSize: '12px',
-                    color: 'green'
-                } ,
-                formatter: function (value) {
-                    return dateUtils.formatTime('MM/dd', value)
-                }
-            },
-            // 坐标刻度
-            axisTick: {
-                show: false
-            },
-        }],
-        // 
-        yAxis: [{
-            position: 'right',
-            axisLabel: {
-                // margin:-18,
-                lineStyle:{  
-                    color:'red',  
+        xAxis: [
+            {
+                type: 'category',
+                data: stockUtils.getSlice(datas.categoryData),
+                // 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
+                boundaryGap: true,
+                // 坐标文字内容
+                axisLabel: {
+                    show: false,
+                    onZero: false,
+                    // 坐标文字相关样式
+                    textStyle: {
+                        fontSize: '12px',
+                        color: 'green'
+                    },
+                    formatter: function(value) {
+                        return dateUtils.formatTime('MM/dd', value)
+                    }
                 },
-                color: STOCK_CONFIG.col.y
-            },
-            scale: true,
-            // min: 'dataMin',
-            // max: 'dataMax',
-            // min: function(value) {
-            //     return (value.min*0.95).toFixed(0);
-            // },
-            // max: function(value) {
-            //     return (value.max*1.05).toFixed(0);
-            // },
-            triggerEvent: true,
-            min: function(value,params) {
-                var startPercent = chartObj.getModel().option.dataZoom[1].start;
-                var endPercent = chartObj.getModel().option.dataZoom[1].end;
-                let lows = stockUtils.getDisplaySlice(utils.clone(lowDatas), startPercent.toFixed(0), endPercent)
-                let lowest = lows.reduce((pre, cur) => pre < cur ? pre : cur)
-                return (lowest*0.95).toFixed(0)
-            },
-            max: function(value,params) {
-                var startPercent = chartObj.getModel().option.dataZoom[1].start;
-                var endPercent = chartObj.getModel().option.dataZoom[1].end;
-                let highs = stockUtils.getDisplaySlice(utils.clone(heighDatas), startPercent.toFixed(0), endPercent)
-                let highest = highs.reduce((pre,cur) => pre>cur?pre:cur)
-                return (highest*1.05).toFixed(0)
-            },
-            // type: 'value',
-            splitNumber:6,
-            // splitArea: {
-            //     show: false
-            // },
-            splitLine: {
-                show: false,
-                lineStyle: {
-                    color: ['#888'],
-                    type: 'dotted'
+                // 坐标刻度
+                axisTick: {
+                    show: false
+                }
+            }
+        ],
+        //
+        yAxis: [
+            {
+                // position: 'left',
+                scale: true,
+                axisLabel: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                // 坐标刻度
+                axisTick: {
+                    show: false
                 }
             },
-            // 坐标刻度
-            axisTick: {
-                show: true
+            {
+                // position: 'right',
+                axisLabel: {
+                    // margin:-18,
+                    lineStyle: {
+                        color: 'red'
+                    },
+                    color: STOCK_CONFIG.col.y
+                },
+                scale: true,
+                // min: 'dataMin',
+                // max: 'dataMax',
+                // min: function(value) {
+                //     return (value.min*0.95).toFixed(0);
+                // },
+                // max: function(value) {
+                //     return (value.max*1.05).toFixed(0);
+                // },
+                triggerEvent: true,
+                min: function(value, params) {
+                    var startPercent = chartObj.getModel().option.dataZoom[1].start
+                    var endPercent = chartObj.getModel().option.dataZoom[1].end
+                    let lows = stockUtils.getDisplaySlice(utils.clone(lowDatas), startPercent.toFixed(0), endPercent)
+                    let lowest = lows.reduce((pre, cur) => (pre < cur ? pre : cur))
+                    return (lowest * 0.95).toFixed(0)
+                },
+                max: function(value, params) {
+                    var startPercent = chartObj.getModel().option.dataZoom[1].start
+                    var endPercent = chartObj.getModel().option.dataZoom[1].end
+                    let highs = stockUtils.getDisplaySlice(utils.clone(heighDatas), startPercent.toFixed(0), endPercent)
+                    let highest = highs.reduce((pre, cur) => (pre > cur ? pre : cur))
+                    return (highest * 1.05).toFixed(0)
+                },
+                // type: 'value',
+                splitNumber: 6,
+                // splitArea: {
+                //     show: false
+                // },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: ['#888'],
+                        type: 'dotted'
+                    }
+                },
+                // 坐标刻度
+                axisTick: {
+                    show: true
+                }
             }
-        }],
-        dataZoom: [{
-            type: 'inside',
-            start: STOCK_CONFIG.st,
-            end: STOCK_CONFIG.ed
-        }, {
-            show: false,
-            type: 'slider',
-            // y: '94%',
-            start: STOCK_CONFIG.st,
-            end: STOCK_CONFIG.ed
-        }],
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                start: STOCK_CONFIG.st,
+                end: STOCK_CONFIG.ed
+            },
+            {
+                show: false,
+                type: 'slider',
+                // y: '94%',
+                start: STOCK_CONFIG.st,
+                end: STOCK_CONFIG.ed
+            }
+        ],
         series: [
             {
-                type: 'k', //Candlestick 
+                type: 'k', //Candlestick
                 name: '日K',
                 id: 'k-line',
                 // braGap用于设置同一个类目内的柱形之间的间距
@@ -213,7 +235,7 @@ export default function getData(chartObj, datasets, kineType) {
                 data: stockUtils.getSlice(datas.values),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 itemStyle: {
                     normal: {
                         width: 1,
@@ -223,91 +245,98 @@ export default function getData(chartObj, datasets, kineType) {
                         borderColor0: STOCK_CONFIG.col.down
                     }
                 }
-            }, {
+            },
+            {
                 type: 'line',
-                name: '5'+kDisplay+'平均线',
+                name: '5' + kDisplay + '平均线',
                 data: stockUtils.getSlice(stockUtils.calculateMA(datas, 5)),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: STOCK_CONFIG.col.m5
                     }
                 }
-            }, {
+            },
+            {
                 type: 'line',
-                name: '10'+kDisplay+'平均线',
+                name: '10' + kDisplay + '平均线',
                 data: stockUtils.getSlice(stockUtils.calculateMA(datas, 10)),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: STOCK_CONFIG.col.m10
                     }
                 }
-            }, {
+            },
+            {
                 type: 'line',
-                name: '20'+kDisplay+'平均线',
+                name: '20' + kDisplay + '平均线',
                 data: stockUtils.getSlice(stockUtils.calculateMA(datas, 20)),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: STOCK_CONFIG.col.m20
                     }
                 }
-            }, {
+            },
+            {
                 type: 'line',
-                name: '60'+kDisplay+'平均线',
+                name: '60' + kDisplay + '平均线',
                 data: stockUtils.getSlice(stockUtils.calculateMA(datas, 60)),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: STOCK_CONFIG.col.m60
                     }
                 }
-            }, {
+            },
+            {
                 type: 'line',
                 name: '上軸線',
                 data: stockUtils.getSlice(uppers),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: '#7999f2'
                     }
                 }
-            }, {
+            },
+            {
                 type: 'line',
                 name: '中軸線',
                 data: stockUtils.getSlice(middles),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: '#7999f2'
                     }
                 }
-            }, {
+            },
+            {
                 type: 'line',
                 name: '下軸線',
                 data: stockUtils.getSlice(lowers),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,

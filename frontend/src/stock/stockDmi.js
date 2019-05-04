@@ -6,8 +6,8 @@ import * as stockUtils from '../utils/stockUtils'
 
 // let ADX = require('technicalindicators').ADX
 
-export default function getData (datasets, kineType) {
-    let kDisplay = kineType == 1 ? "月" : "日"
+export default function getData(datasets, kineType) {
+    let kDisplay = kineType == 1 ? '月' : '日'
     let datas = stockUtils.splitData(datasets)
     /* // DMI
     let inputDMI = {
@@ -21,7 +21,7 @@ export default function getData (datasets, kineType) {
     let adxs = stockUtils.getDmiAdxs(dmis)
     let mdis = stockUtils.getDmiMdis(dmis)
     let pdis = stockUtils.getDmipdis(dmis) */
-    
+
     let dmiResult = stockUtils.getDmis(datas)
     // let adxs = dmiResult.adx14
     // let diUps = dmiResult.diUp14
@@ -55,17 +55,17 @@ export default function getData (datasets, kineType) {
                 type: 'cross'
             }
         }, */
-        tooltip : {
+        tooltip: {
             trigger: 'axis',
             backgroundColor: 'black',
-            position : [0, 0],
+            position: [0, 0],
             // extraCssText:'width:100px;height:60px;',
-            formatter: function (params) {
+            formatter: function(params) {
                 let v = `
-                <font color="${STOCK_CONFIG.col.diUp}">+DI14:</font> ${params[0].value.toFixed(1)}
-                <font color="${STOCK_CONFIG.col.diDown}">-DI14:</font> ${params[1].value.toFixed(1)}
-                <font color="${STOCK_CONFIG.col.adx}">ADX14:</font> ${params[2].value.toFixed(1)}
-                <font color="${STOCK_CONFIG.col.adxr}">ADXR14:</font> ${params[3].value.toFixed(1)}
+                <font color="${STOCK_CONFIG.col.diUp}">+DI14: ${params[0].value.toFixed(1)}</font>
+                <font color="${STOCK_CONFIG.col.diDown}">-DI14: ${params[1].value.toFixed(1)}</font>
+                <font color="${STOCK_CONFIG.col.adx}">ADX14: ${params[2].value.toFixed(1)}</font>
+                <font color="${STOCK_CONFIG.col.adxr}">ADXR14: ${params[3].value.toFixed(1)}</font>
                 `
                 // <font color="${STOCK_CONFIG.col.adx}">TR:</font> ${params[3].value.toFixed(1)}
                 // <font color="${STOCK_CONFIG.col.adx}">TR14:</font> ${params[4].value.toFixed(1)}
@@ -74,8 +74,8 @@ export default function getData (datasets, kineType) {
                 // <font color="${STOCK_CONFIG.col.adx}">+DM14:</font> ${params[7].value.toFixed(1)}
                 // <font color="${STOCK_CONFIG.col.adx}">-DM14:</font> ${params[8].value.toFixed(1)}
                 // <font color="${STOCK_CONFIG.col.adx}">DX:</font> ${params[9].value.toFixed(1)}
-                $("#tooltipId4"+kineType).html(v)
-                return "";
+                $('#tooltipId4' + kineType).html(v)
+                return ''
             },
             axisPointer: {
                 type: 'cross',
@@ -90,12 +90,14 @@ export default function getData (datasets, kineType) {
                 }
             }
         },
-        grid: [{
-            top: '4%',
-            left: '2%',
-            right: '6%',
-            height: '90%'
-        }],
+        grid: [
+            {
+                top: '4%',
+                left: '2%',
+                right: '6%',
+                height: '90%'
+            }
+        ],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
             link: {
@@ -105,17 +107,18 @@ export default function getData (datasets, kineType) {
             // mouse动时坐标处的文字
             label: {
                 backgroundColor: '#777'
-            },
+            }
             // triggerOn:'click'
         },
         // 上下两个图表的x轴数据
-        xAxis: [{
-            type: 'category',
-            data: stockUtils.getSlice(datas.categoryData),
-            // 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
-            boundaryGap: true,
-            // 坐标文字内容
-            /* axisLabel: {
+        xAxis: [
+            {
+                type: 'category',
+                data: stockUtils.getSlice(datas.categoryData),
+                // 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
+                boundaryGap: true,
+                // 坐标文字内容
+                /* axisLabel: {
                 onZero: false,
                 // 坐标文字相关样式
                 textStyle: {
@@ -126,62 +129,82 @@ export default function getData (datasets, kineType) {
                     return dateUtils.formatTime('MM/dd', value)
                 }
             } */
-            // 坐标刻度
-            axisTick: {
-                show: false
-            },
-            // 坐标文字内容
-            axisLabel: {
-                show: false
-            }
-        }],
-        // 
-        yAxis: [{
-            position: 'right',
-            axisLabel: {
-                show: false,
-                // margin:-18,
-                lineStyle:{  
-                    color:'red',  
+                // 坐标刻度
+                axisTick: {
+                    show: false
                 },
-                color: STOCK_CONFIG.col.y
-            },
-            scale: true,
-            // position: 'right',
-            min: function(value) {
-                return (value.min*0.95).toFixed(0);
-            },
-            max: function(value) {
-                return (value.max*1.05).toFixed(0);
-            },
-            splitNumber: 2,
-            // splitArea: {
-            //     show: false
-            // },
-            splitLine: {
-                show: false,
-                lineStyle: {
-                    color: ['#888'],
-                    type: 'dotted'
+                // 坐标文字内容
+                axisLabel: {
+                    show: false
+                }
+            }
+        ],
+        //
+        yAxis: [
+            {
+                // position: 'left',
+                scale: true,
+                axisLabel: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                // 坐标刻度
+                axisTick: {
+                    show: false
                 }
             },
-            // 坐标刻度
-            axisTick: {
-                show: false
+            {
+                position: 'right',
+                axisLabel: {
+                    show: false,
+                    // margin:-18,
+                    lineStyle: {
+                        color: 'red'
+                    },
+                    color: STOCK_CONFIG.col.y
+                },
+                scale: true,
+                // position: 'right',
+                min: function(value) {
+                    return (value.min * 0.95).toFixed(0)
+                },
+                max: function(value) {
+                    return (value.max * 1.05).toFixed(0)
+                },
+                splitNumber: 2,
+                // splitArea: {
+                //     show: false
+                // },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: ['#888'],
+                        type: 'dotted'
+                    }
+                },
+                // 坐标刻度
+                axisTick: {
+                    show: false
+                }
             }
-        }],
-        dataZoom: [{
-            type: 'inside',
-            disabled: true,
-            start: STOCK_CONFIG.st,
-            end: STOCK_CONFIG.ed
-        }, {
-            show: false,
-            type: 'slider',
-            // y: '94%',
-            start: STOCK_CONFIG.st,
-            end: STOCK_CONFIG.ed
-        }],
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                disabled: true,
+                start: STOCK_CONFIG.st,
+                end: STOCK_CONFIG.ed
+            },
+            {
+                show: false,
+                type: 'slider',
+                // y: '94%',
+                start: STOCK_CONFIG.st,
+                end: STOCK_CONFIG.ed
+            }
+        ],
         series: [
             {
                 name: '+DI14',
@@ -189,40 +212,43 @@ export default function getData (datasets, kineType) {
                 data: stockUtils.getSlice(diUp14Results),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: STOCK_CONFIG.col.diUp
                     }
                 }
-            }, {
+            },
+            {
                 name: '-DI14',
                 type: 'line',
                 data: stockUtils.getSlice(diDown14Results),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: STOCK_CONFIG.col.diDown
                     }
                 }
-            }, {
+            },
+            {
                 name: 'ADX14',
                 type: 'line',
                 data: stockUtils.getSlice(adx14Results),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,
                         color: STOCK_CONFIG.col.adx
                     }
                 }
-            }, /* {
+            },
+            /* {
                 name: 'TR',
                 type: 'line',
                 data: stockUtils.getSlice(trResults),
@@ -313,13 +339,13 @@ export default function getData (datasets, kineType) {
                         color: STOCK_CONFIG.col.adx
                     }
                 }
-            },  */{
+            },  */ {
                 name: 'ADXR14',
                 type: 'line',
                 data: stockUtils.getSlice(adxr14Results),
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 lineStyle: {
                     normal: {
                         width: 1,

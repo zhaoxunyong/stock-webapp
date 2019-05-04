@@ -161,7 +161,7 @@ export default {
       name: "",
       currSelectedType: "",
       currSubSelectedType: "",
-      initNumber: 50,
+      initNumber: 250,
       options: [{ value: "", text: "Please select..." }],
       list: [],
       items: [],

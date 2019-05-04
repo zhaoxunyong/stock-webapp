@@ -5,8 +5,8 @@
 import * as stockUtils from '../utils/stockUtils'
 import * as dateUtils from '../utils/dateUtils'
 
-export default function getData (datasets, kineType) {
-    let kDisplay = kineType == 1 ? "月" : "日"
+export default function getData(datasets, kineType) {
+    let kDisplay = kineType == 1 ? '月' : '日'
     let datas = stockUtils.splitData(datasets)
     let sliceVols = stockUtils.getSlice(datas.vols)
 
@@ -25,15 +25,15 @@ export default function getData (datasets, kineType) {
                 type: 'cross'
             }
         }, */
-        tooltip : {
+        tooltip: {
             trigger: 'axis',
             backgroundColor: 'black',
-            position : [0, 0],
+            position: [0, 0],
             // extraCssText:'width:100px;height:60px;',
-            formatter: function (params) {
-                let v = `<font color="${STOCK_CONFIG.col.volup}">成交量:</font> ${params[0].value}`
-                $("#tooltipId2"+kineType).html(v)
-                return "";
+            formatter: function(params) {
+                let v = `<font color="${STOCK_CONFIG.col.volup}">成交量: ${params[0].value}</font>`
+                $('#tooltipId2' + kineType).html(v)
+                return ''
             },
             axisPointer: {
                 type: 'cross',
@@ -48,12 +48,14 @@ export default function getData (datasets, kineType) {
                 }
             }
         },
-        grid: [{
-            top: '4%',
-            left: '2%',
-            right: '6%',
-            height: '90%'
-        }],
+        grid: [
+            {
+                top: '4%',
+                left: '2%',
+                right: '6%',
+                height: '90%'
+            }
+        ],
         // 坐标轴指示器（axisPointer）的全局公用设置
         axisPointer: {
             link: {
@@ -63,17 +65,18 @@ export default function getData (datasets, kineType) {
             // mouse动时坐标处的文字
             label: {
                 backgroundColor: '#777'
-            },
+            }
             // triggerOn:'click'
         },
         // 上下两个图表的x轴数据
-        xAxis: [{
-            type: 'category',
-            data: stockUtils.getSlice(datas.categoryData),
-            // 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
-            boundaryGap: true,
-            // 坐标文字内容
-            /* axisLabel: {
+        xAxis: [
+            {
+                type: 'category',
+                data: stockUtils.getSlice(datas.categoryData),
+                // 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
+                boundaryGap: true,
+                // 坐标文字内容
+                /* axisLabel: {
                 onZero: false,
                 // 坐标文字相关样式
                 textStyle: {
@@ -84,66 +87,72 @@ export default function getData (datasets, kineType) {
                     return dateUtils.formatTime('MM/dd', value)
                 }
             } */
-            // 坐标刻度
-            axisTick: {
-                show: false
-            },
-            // 坐标文字内容
-            axisLabel: {
-                show: false
+                // 坐标刻度
+                axisTick: {
+                    show: false
+                },
+                // 坐标文字内容
+                axisLabel: {
+                    show: false
+                }
             }
-        }],
-        // 
-        yAxis: [{
-            /* axisLabel: {
+        ],
+        //
+        yAxis: [
+            {
+                /* axisLabel: {
                 lineStyle:{  
                     color:'red',  
                 },
                 color: STOCK_CONFIG.col.y
             }, */
-            position: 'right',
-            axisLabel: {
-                // margin:-18,
-                onZero: false,
-                // 坐标文字相关样式
-                /* textStyle: {
+                position: 'right',
+                axisLabel: {
+                    // margin:-18,
+                    onZero: false,
+                    // 坐标文字相关样式
+                    /* textStyle: {
                     fontSize: '12px',
                     color: 'green'
                 } , */
-                formatter: function (value) {
-                    return value >= 1000 ? (value / 1000).toFixed(0) +'k' : value
-                }
-            },
-            scale: true,
-            // position: 'right',
-            min: 0,
-            max: function(value) {
-                return (value.max*1.05).toFixed(0);
-            },
-            splitNumber: 2,
-            // splitArea: {
-            //     show: false
-            // },
-            splitLine: {
-                show: false,
-                lineStyle: {
-                    color: ['#888'],
-                    type: 'dotted'
+                    formatter: function(value) {
+                        return value >= 1000 ? (value / 1000).toFixed(0) + 'k' : value
+                    }
+                },
+                scale: true,
+                // position: 'right',
+                min: 0,
+                max: function(value) {
+                    return (value.max * 1.05).toFixed(0)
+                },
+                splitNumber: 2,
+                // splitArea: {
+                //     show: false
+                // },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: ['#888'],
+                        type: 'dotted'
+                    }
                 }
             }
-        }],
-        dataZoom: [{
-            type: 'inside',
-            disabled: true,
-            start: STOCK_CONFIG.st,
-            end: STOCK_CONFIG.ed
-        }, {
-            show: false,
-            type: 'slider',
-            // y: '94%',
-            start: STOCK_CONFIG.st,
-            end: STOCK_CONFIG.ed
-        }],
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                disabled: true,
+                start: STOCK_CONFIG.st,
+                end: STOCK_CONFIG.ed
+            },
+            {
+                show: false,
+                type: 'slider',
+                // y: '94%',
+                start: STOCK_CONFIG.st,
+                end: STOCK_CONFIG.ed
+            }
+        ],
         series: [
             {
                 type: 'bar',
@@ -156,17 +165,17 @@ export default function getData (datasets, kineType) {
                 data: sliceVols,
                 smooth: true,
                 showSymbol: false,
-                symbol: "none",
+                symbol: 'none',
                 itemStyle: {
                     normal: {
                         width: 1,
-                        color: (params) => {
+                        color: params => {
                             let currVol = params.data
                             let previousVol = params.dataIndex > 0 ? sliceVols[params.dataIndex - 1] : 0
-                            if(parseInt(currVol) < parseInt(previousVol)) {
-                                return STOCK_CONFIG.col.voldown;
+                            if (parseInt(currVol) < parseInt(previousVol)) {
+                                return STOCK_CONFIG.col.voldown
                             } else {
-                                return STOCK_CONFIG.col.volup;
+                                return STOCK_CONFIG.col.volup
                             }
                         }
                     }
