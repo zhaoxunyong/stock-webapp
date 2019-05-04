@@ -362,7 +362,7 @@ export default {
   font-size: 100%;
   margin-left: 12px;
   position: absolute;
-  top: 10px;
+  top: 4px;
 }
 .tooltopStyle2,
 .tooltopStyle3,
@@ -371,6 +371,7 @@ export default {
 .tooltopStyle6 {
   font-size: 100%;
   margin-left: 12px;
+  margin-top: -13px;
   position: absolute;
   /* top: 20px; */
 }
