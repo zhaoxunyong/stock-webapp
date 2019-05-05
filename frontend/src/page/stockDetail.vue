@@ -56,15 +56,16 @@
               type="checkbox"
               :id="'inlineCheckbox'+item.id"
               :value="item.id"
-              @click="changedValue(item.id)"
+              @click="changedValue(item.id,item.name)"
               :checked="subSelectedItems.length > 0 && subSelectedItems.indexOf(item.id) != -1?'checked':''"
             >
             <label class="form-check-label" for="inlineCheckbox1">
-              {{item.name}}
-              <a href="#" @click.prevent="go(item.id, item.name)" :class="isSelected(item.id)">
-          {{item.name}}
-        </a>
-              </label>
+              <a
+                href="#"
+                @click.prevent="go(item.id, item.name)"
+                :class="isSelected(item.id)"
+              >{{item.name}}</a>
+            </label>
           </div>
         </div>
         <div>
@@ -101,8 +102,7 @@ export default {
       companyStatus: "",
       subItems: [],
       subSelectedItems: [],
-      showLeftSub: false,
-      currSubId: ''
+      currSubId: ""
     };
   },
   created() {
@@ -129,24 +129,33 @@ export default {
   },
   mounted() {},
   methods: {
-    go (id, name) {
-      this.currSubId = id
-      this.showLeftSub = !this.showLeftSub
-      if(this.showLeftSub) {
+    go(id, name) {
+      if (id === this.currSubId) {
+        // 点击的是同一个
+        this.currSubId = "";
+      } else {
+        this.currSubId = id;
+      }
+      if (this.currSubId !== "") {
         Bus.$emit("getMySubStockSelected", id, name);
       } else {
+        this.currSubId = "";
         // 自動選擇自選股
-        Bus.$emit("autoSelectedMyStockSelectedType", $this.currSelectedType, $this.currSelectedName);
+        Bus.$emit(
+          "autoSelectedMyStockSelectedType",
+          this.currSelectedType,
+          this.currSelectedName
+        );
       }
     },
     // 将当前股票高亮显示
     isSelected(id) {
-      if(this.currSubId == id) {
-        return 'selected'
+      if (this.currSubId == id) {
+        return "selected";
       }
-      return ''
+      return "";
     },
-    changedValue(value) {
+    changedValue(id, name) {
       this.stockId = this.$route.params.stockId;
       let _this = this;
       let vals = [];
