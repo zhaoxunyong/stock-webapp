@@ -111,6 +111,23 @@ export default {
       }
     });
 
+    // 从子选股中点击过来
+    // 从stockmyselectedtype.vue中过来：当点击某个自选股标签时
+    Bus.$on('getMySubStockSelected', (id, name) => {
+      this.myStockSelectedName = name
+      this.$api.get("/api/stock/getStockMyDatasBySubId/" + id, null, r => {
+          this.list = r
+          if(r != undefined && r.length > 0) {
+            this.firstStockId = r[0].stockId
+            //改变路由的地址
+            this.push('/content/' + this.firstStockId+'/1')
+          } else {
+            this.push('/content/0/1')
+            Bus.$emit('emptyNews')
+          }
+        })
+    });
+
     // 从stockmyselectedtype.vue中过来：当点击store股标签时
     Bus.$on('getAllStockMyStore', () => {
       this.myStockSelectedName = '庫存股'

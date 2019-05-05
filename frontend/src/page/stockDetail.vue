@@ -59,7 +59,12 @@
               @click="changedValue(item.id)"
               :checked="subSelectedItems.length > 0 && subSelectedItems.indexOf(item.id) != -1?'checked':''"
             >
-            <label class="form-check-label" for="inlineCheckbox1">{{item.name}}</label>
+            <label class="form-check-label" for="inlineCheckbox1">
+              {{item.name}}
+              <a href="#" @click.prevent="go(item.id, item.name)" :class="isSelected(item.id)">
+          {{item.name}}
+        </a>
+              </label>
           </div>
         </div>
         <div>
@@ -95,7 +100,9 @@ export default {
       currSelectedName: "",
       companyStatus: "",
       subItems: [],
-      subSelectedItems: []
+      subSelectedItems: [],
+      showLeftSub: false,
+      currSubId: ''
     };
   },
   created() {
@@ -122,6 +129,23 @@ export default {
   },
   mounted() {},
   methods: {
+    go (id, name) {
+      this.currSubId = id
+      this.showLeftSub = !this.showLeftSub
+      if(this.showLeftSub) {
+        Bus.$emit("getMySubStockSelected", id, name);
+      } else {
+        // 自動選擇自選股
+        Bus.$emit("autoSelectedMyStockSelectedType", $this.currSelectedType, $this.currSelectedName);
+      }
+    },
+    // 将当前股票高亮显示
+    isSelected(id) {
+      if(this.currSubId == id) {
+        return 'selected'
+      }
+      return ''
+    },
     changedValue(value) {
       this.stockId = this.$route.params.stockId;
       let _this = this;
@@ -247,6 +271,9 @@ export default {
 </script>
 
 <style scoped>
+.selected {
+  color: red;
+}
 .mt-4 {
   margin-top: 38px !important;
 }

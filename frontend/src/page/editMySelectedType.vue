@@ -379,7 +379,7 @@ export default {
       if (this.currSubSelectedType == id) {
         return "warning";
       }
-      return "success";
+      return "danger";
     },
     getUrl(input) {
       if (this.currSubSelectedType !== "") {
