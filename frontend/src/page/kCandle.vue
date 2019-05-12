@@ -123,10 +123,6 @@ export default {
     openNewKline(param) {
       // console.log(param)
     },
-    allinit() {
-      this.init();
-      this.chartInit();
-    },
     init() {
       let this_ = this;
       // this_.items = [{"id":"402379055645396992","type":6,"memo":"stockTower","status":1,"sortOrder":1},{"id":"402378966034092032","type":2,"memo":"stockVol","status":1,"sortOrder":2},{"id":"402378966617100288","type":3,"memo":"stockRsi","status":1,"sortOrder":3},{"id":"402379033608523776","type":4,"memo":"stockDmi","status":1,"sortOrder":4},{"id":"402379042320093184","type":5,"memo":"stockMacd","status":1,"sortOrder":5},{"id":"402378924086857728","type":1,"memo":"stockCandle","status":1,"sortOrder":6}]
@@ -327,7 +323,7 @@ export default {
     // '$route': 'allinit',
     $route(to, from) {
       // this.getData()
-      this.allinit();
+      this.chartInit();
       //this.$router.push('/content/' + this.getStatus(this.$route.path))
     }
   }
