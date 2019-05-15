@@ -2,7 +2,9 @@
   <div>
     <div class="container-fluid">
       <nav class="nav nav-pills nav-justified">
-        <div class="pt-2 pr-2"><h5>{{this.company}}</h5></div>
+        <div class="pt-2 pr-2">
+          <h5>{{this.company}}</h5>
+        </div>
         <a class="nav-link active" href="#" @click.prevent="showExcludeNews($event)">個股新聞</a>
         <a class="nav-link" href="#" @click.prevent="showIncludeNews($event)">焦點新聞</a>
         <!-- <span style="padding-left: 5px"></span> -->
@@ -12,20 +14,26 @@
     </div>
     <div class="container-fluid scrollbar news-content" id="style-1">
       <b-table striped hover :items="items" :fields="fields">
-        <span slot="content_title" slot-scope="data" v-html="data.value" />
+        <span slot="content_title" slot-scope="data" v-html="data.value"/>
       </b-table>
-      <b-pagination-nav align="center" :number-of-pages="numberOfPages" base-url="#" v-model="currentPage" :link-gen="linkGen" />
+      <b-pagination-nav
+        align="center"
+        :number-of-pages="numberOfPages"
+        base-url="#"
+        v-model="currentPage"
+        :link-gen="linkGen"
+      />
     </div>
   </div>
 </template>
 <script>
-import Bus from '../eventBus'
+import Bus from "../eventBus";
 export default {
-  data () {
+  data() {
     return {
-      company: '',
-      stockId: '',
-      selectedType: '0',
+      company: "",
+      stockId: "",
+      selectedType: "0",
       numberOfPages: 0,
       currentPage: 1,
       displayAll: 0,
@@ -40,50 +48,49 @@ export default {
       },
       items: [],
       intervalid1: null
-    }
+    };
   },
-  created () {
-    this.getData()
-    Bus.$on('emptyNews', () => {
-      this.cleanNews()
-    })
-    Bus.$on('initCurrentPage', (pageNum) => {
-      this.currentPage = pageNum
-    })
+  created() {
+    this.getData();
+    Bus.$on("emptyNews", () => {
+      this.cleanNews();
+    });
+    Bus.$on("initCurrentPage", pageNum => {
+      this.currentPage = pageNum;
+    });
     // 从左侧搜索后触发
-    Bus.$on('selectedProcess', () => {
+    Bus.$on("selectedProcess", () => {
       // 自动抓一次数据
       // Bus.$emit('loading', "正在自動獲取最新的新聞中...", true)
-      this.stockId = this.$route.params.stockId
-      if(this.stockId != undefined) {
-        console.log("News autoFetch stockNews started......"+this.stockId)
-        let url = "/api/stock/fetchLatestNews?stockId="+this.stockId
+      this.stockId = this.$route.params.stockId;
+      if (this.stockId != undefined) {
+        console.log("News autoFetch stockNews started......" + this.stockId);
+        let url = "/api/stock/fetchLatestNews?stockId=" + this.stockId;
         // alert("fetchNews=============>"+url)
-        this.$api.post(url, null, rs => {
+        this.$api.post(url).then(rs => {
           // Bus.$emit('success', "自動更新新聞成功!")
-          this.getData()
-          console.log("News autoFetch stockNews end......"+this.stockId)
-        })
+          this.getData();
+          console.log("News autoFetch stockNews end......" + this.stockId);
+        });
       }
-    })
+    });
     // 从stockmyselectedtype.vue中过来：当点击某个自选股标签时
-    Bus.$on('getMyStockSelected', (selectedType, selectedName) => {
-      if(selectedType == undefined) {
-        this.selectedType = '0'
+    Bus.$on("getMyStockSelected", (selectedType, selectedName) => {
+      if (selectedType == undefined) {
+        this.selectedType = "0";
       } else {
-        this.selectedType = selectedType
+        this.selectedType = selectedType;
       }
     });
 
     // 从stockmyselectedtype.vue中过来：当点击store股标签时
-    Bus.$on('getAllStockMyStore', () => {
-      this.selectedType = '0'
+    Bus.$on("getAllStockMyStore", () => {
+      this.selectedType = "0";
     });
 
     // this.timeOutsetInterval()
   },
-  mounted () {
-  },
+  mounted() {},
   /*destroyed:function(){
     if(this.intervalid1 != null) {
       clearInterval(this.intervalid1)
@@ -108,7 +115,7 @@ export default {
         console.log("News autoFetch stockNews started......"+this.stockId)
         let url = "/api/stock/fetchLatestNews?stockId="+this.stockId
         // alert("fetchNews=============>"+url)
-        $this.$api.post(url, null, rs => {
+        $this.$api.post(url).then(rs => {
           Bus.$emit('success', "自動更新新聞成功!")
           this.getData()
           console.log("News autoFetch stockNews end......"+this.stockId)
@@ -117,105 +124,138 @@ export default {
     },*/
     linkGen(pageNum) {
       return {
-        path: '/content/' + this.stockId+'/'+pageNum
-      }
+        path: "/content/" + this.stockId + "/" + pageNum
+      };
     },
     // 第一次加载数据
     cleanNews() {
-      this.items = []
-      $("#content_id").text("")
-      this.numberOfPages = 0
-      this.currentPage = 1
+      this.items = [];
+      $("#content_id").text("");
+      this.numberOfPages = 0;
+      this.currentPage = 1;
     },
     showExcludeNews(event) {
-      $(".active").removeClass('active')
-      $(event.target).addClass('active')
-      this.type = 1
-      this.displayAll = 0
-      this.getData(1)
+      $(".active").removeClass("active");
+      $(event.target).addClass("active");
+      this.type = 1;
+      this.displayAll = 0;
+      this.getData(1);
     },
     showIncludeNews(event) {
-      $(".active").removeClass('active')
-      $(event.target).addClass('active')
-      this.type = 0
-      this.displayAll = 0
-      this.getData(1)
+      $(".active").removeClass("active");
+      $(event.target).addClass("active");
+      this.type = 0;
+      this.displayAll = 0;
+      this.getData(1);
     },
     showExcludeNewsAll(event) {
-      $(".active").removeClass('active')
-      $(event.target).addClass('active')
-      this.type = 1
-      this.displayAll = 1
-      this.getData(1)
+      $(".active").removeClass("active");
+      $(event.target).addClass("active");
+      this.type = 1;
+      this.displayAll = 1;
+      this.getData(1);
     },
     showIncludeNewsAll(event) {
-      $(".active").removeClass('active')
-      $(event.target).addClass('active')
-      this.type = 0
-      this.displayAll = 1
-      this.getData(1)
+      $(".active").removeClass("active");
+      $(event.target).addClass("active");
+      this.type = 0;
+      this.displayAll = 1;
+      this.getData(1);
     },
     // 第一次加载数据
-    getData (pageNum) {
+    getData(pageNum) {
       // if(pageNum != undefined) {
       //   this.currentPage = pageNum
       // } else {
       //   this.currentPage = this.$route.params.pageNum
       // }
 
-      if(pageNum == undefined) {
-        pageNum = this.$route.params.pageNum
+      if (pageNum == undefined) {
+        pageNum = this.$route.params.pageNum;
       }
       // pageNum = this.currentPage
-      this.stockId = this.$route.params.stockId
-      if(this.stockId != undefined && this.stockId != '' && this.stockId != 0) {
-        this.$api.get('/api/stock/getStockData/'+this.stockId, null, stockData => {
-          this.company = stockData.company
-          // let pageNum = this.$route.params.pageNum == undefined ? 1 : this.$route.params.pageNum
-          // let rootUrl = type == 0 ? '/api/stock/getNewsIncludeBystockId/' : '/api/stock/getNewsExcludeBystockId/'
-          // let url = rootUrl + this.stockId+'/'+pageNum+'/'+this.pageSize
-          let url = ''
-          if(this.displayAll == 1) {
-            let paramStockId = 0
-            let rootUrl = (this.type == undefined || this.type == 0) ? '/api/stock/getNewsIncludeBystockId/' : '/api/stock/getNewsExcludeBystockId/'
-            url = rootUrl + paramStockId+'/'+this.selectedType+'/'+pageNum+'/'+this.pageSize
-          } else {
-            let paramStockId = this.stockId
-            let rootUrl = (this.type == undefined || this.type == 0) ? '/api/stock/getNewsIncludeBystockId4All/' : '/api/stock/getNewsExcludeBystockId4All/'
-            url = rootUrl + paramStockId+'/'+pageNum+'/'+this.pageSize
-          }
-          // alert("url1--->"+url)
-          this.$api.get(url, null, rs => {
-            // this.dat = r
-            this.numberOfPages = rs.pageTotal
-            let rsData = rs.rows
-            this.items = []
-            for(var i=0;i<rsData.length;i++) {
-              let context = "<a target=\"_blank\" href=\""+rsData[i].url+"\">"+rsData[i].subject+"</a>"
-              this.items.push({
-                content_title: context
-              })
+      this.stockId = this.$route.params.stockId;
+      if (
+        this.stockId != undefined &&
+        this.stockId != "" &&
+        this.stockId != 0
+      ) {
+        this.$api
+          .get("/api/stock/getStockData/" + this.stockId)
+          .then(stockData => {
+            this.company = stockData.company;
+            // let pageNum = this.$route.params.pageNum == undefined ? 1 : this.$route.params.pageNum
+            // let rootUrl = type == 0 ? '/api/stock/getNewsIncludeBystockId/' : '/api/stock/getNewsExcludeBystockId/'
+            // let url = rootUrl + this.stockId+'/'+pageNum+'/'+this.pageSize
+            let url = "";
+            if (this.displayAll == 1) {
+              let paramStockId = 0;
+              let rootUrl =
+                this.type == undefined || this.type == 0
+                  ? "/api/stock/getNewsIncludeBystockId/"
+                  : "/api/stock/getNewsExcludeBystockId/";
+              url =
+                rootUrl +
+                paramStockId +
+                "/" +
+                this.selectedType +
+                "/" +
+                pageNum +
+                "/" +
+                this.pageSize;
+            } else {
+              let paramStockId = this.stockId;
+              let rootUrl =
+                this.type == undefined || this.type == 0
+                  ? "/api/stock/getNewsIncludeBystockId4All/"
+                  : "/api/stock/getNewsExcludeBystockId4All/";
+              url =
+                rootUrl + paramStockId + "/" + pageNum + "/" + this.pageSize;
             }
-          })
-          $("#content_id").text(this.company+": ").parent().remove()
-        })
+            // alert("url1--->"+url)
+            this.$api.get(url).then(rs => {
+              // this.dat = r
+              this.numberOfPages = rs.pageTotal;
+              let rsData = rs.rows;
+              this.items = [];
+              for (var i = 0; i < rsData.length; i++) {
+                let context =
+                  '<a target="_blank" href="' +
+                  rsData[i].url +
+                  '">' +
+                  rsData[i].subject +
+                  "</a>";
+                this.items.push({
+                  content_title: context
+                });
+              }
+            });
+            $("#content_id")
+              .text(this.company + ": ")
+              .parent()
+              .remove();
+          });
       }
     }
   },
   // 从stockmydata.vue中的第一次之后的请求
   watch: {
-    '$route' (to, from) {
-      this.stockId = this.$route.params.stockId
-      if(this.stockId != undefined && this.stockId != '' && this.stockId != 0) {
-        this.getData()
+    $route(to, from) {
+      this.stockId = this.$route.params.stockId;
+      if (
+        this.stockId != undefined &&
+        this.stockId != "" &&
+        this.stockId != 0
+      ) {
+        this.getData();
       } else {
-        this.cleanNews()
+        this.cleanNews();
       }
 
       //this.$router.push('/content/' + this.getStatus(this.$route.path))
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -235,14 +275,14 @@ export default {
   overflow: auto;
 }
 #style-1::-webkit-scrollbar {
-    width: 8px;
-    background-color: #F5F5F5;
-} 
+  width: 8px;
+  background-color: #f5f5f5;
+}
 #style-1::-webkit-scrollbar-thumb {
-    background-color: #72df184d;
+  background-color: #72df184d;
 }
 #style-1::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #F5F5F5;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
 }
 </style>

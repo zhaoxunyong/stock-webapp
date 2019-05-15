@@ -63,7 +63,7 @@ export default {
       this.selectedTypes = []
       let stockId = this.$route.params.stockId
       if(stockId != undefined && stockId != "") {
-        this.$api.get('/api/stock/getMySelectedTypesByStockId/'+stockId, null, rs => {
+        this.$api.get('/api/stock/getMySelectedTypesByStockId/'+stockId).then(rs => {
           if(rs != undefined && rs.length>0) {
             for(var i=0;i<rs.length;i++) {
               let type = rs[i].type
@@ -118,13 +118,13 @@ export default {
     },
     getData() {
       let url = "/api/stock/getStockMySelectedTypes";
-      this.$api.get(url, null, rs => {
+      this.$api.get(url).then(rs => {
         this.items = rs;
       });
     },
     saveData(name) {
       let url = "/api/stock/saveStockMySelectedType?name=" + name;
-      this.$api.post(url, null, rs => {
+      this.$api.post(url).then(rs => {
         this.getData();
         // Bus.$emit('reGetStockMySelectedTypes')
       });

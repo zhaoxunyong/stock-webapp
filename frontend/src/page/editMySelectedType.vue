@@ -172,11 +172,10 @@ export default {
     this.getData();
   },
   mounted() {
-    let _api = this.$api;
     Sortable.create(stockMySelectedItem, {
       handle: ".move-item",
       animation: 150,
-      onUpdate: function(evt) {
+      onUpdate: evt => {
         var item = evt.item; // the current dragged HTMLElement
         // alert(item.outerHTML)
         let changeStockMySelectedTypeParams = [];
@@ -193,7 +192,7 @@ export default {
           let params = {
             changeStockMySelectedTypeDtos: changeStockMySelectedTypeParams
           };
-          _api.post(url, params, rs => {
+          this.$api.post(url, params).then(rs => {
             Bus.$emit("success", "調整自選股顯示順序成功!");
           });
         }
@@ -228,7 +227,7 @@ export default {
     // 保存自選股名稱
     saveData(name) {
       let url = "/api/stock/saveStockMySelectedType?name=" + name;
-      this.$api.post(url, null, rs => {
+      this.$api.post(url).then(rs => {
         this.getData();
         // Bus.$emit('reGetStockMySelectedTypes')
       });
@@ -291,7 +290,7 @@ export default {
         let url = `/api/stock/saveStockMySubSelectedType?pid=${pid}&name=${
           this.name3
         }`;
-        this.$api.post(url, null, rs => {
+        this.$api.post(url).then(rs => {
           this.getSubData(pid);
           // Bus.$emit('reGetStockMySelectedTypes')
         });
@@ -310,7 +309,7 @@ export default {
           "&name=" +
           name;
         // alert(url)
-        this.$api.post(url, null, rs => {
+        this.$api.post(url).then(rs => {
           this.getData();
           Bus.$emit("success", "修改名稱成功!");
         });
@@ -336,7 +335,7 @@ export default {
             selectedType: this.currSubSelectedType,
             stockIds: stockIds
           };
-          this.$api.post(url, params, rs => {
+          this.$api.post(url, params).then(rs => {
             Bus.$emit("success", "保存成功!");
           });
         }
@@ -358,7 +357,7 @@ export default {
               selectedType: this.currSelectedType,
               stockIds: stockIds
             };
-            this.$api.post(url, params, rs => {
+            this.$api.post(url, params).then(rs => {
               Bus.$emit("success", "保存成功!");
             });
           }
@@ -422,7 +421,7 @@ export default {
           // alert(stockId+"--->"+selectedType)
           let url =
             "/api/stock/removeStockMySelected?selectedType=" + selectedType;
-          $this.$api.post(url, null, rs => {
+          $this.$api.post(url).then(rs => {
             $this.getData();
             $this.currSelectedType = "";
             $this.currSubSelectedType = "";
@@ -443,7 +442,7 @@ export default {
         .then(function() {
           // alert(stockId+"--->"+selectedType)
           let url = "/api/stock/removeStockMySubSelected?id=" + id;
-          $this.$api.post(url, null, rs => {
+          $this.$api.post(url).then(rs => {
             $this.getSubData(pid);
             $this.currSubSelectedType = "";
             $this.list = [];
@@ -473,7 +472,7 @@ export default {
     getMyStockMySelected(type) {
       this.list = [];
       if (type != "") {
-        this.$api.get("/api/stock/getStockMyDatasByType/" + type, null, rs => {
+        this.$api.get("/api/stock/getStockMyDatasByType/" + type).then(rs => {
           this.list = rs;
         });
       }
@@ -481,7 +480,7 @@ export default {
     getMyStockMySubSelected(id) {
       this.list = [];
       if (id != "") {
-        this.$api.get("/api/stock/getStockMyDatasBySubId/" + id, null, rs => {
+        this.$api.get("/api/stock/getStockMyDatasBySubId/" + id).then(rs => {
           this.list = rs;
         });
       }
@@ -489,7 +488,7 @@ export default {
     getData() {
       // this.options = []
       let url = "/api/stock/getStockMySelectedTypes";
-      this.$api.get(url, null, rs => {
+      this.$api.get(url).then(rs => {
         this.items = rs;
         /*for (var i = 0; i < rs.length; i++) {
           this.options.push({
@@ -503,7 +502,7 @@ export default {
         alert("請先選擇對應的自選股名稱!");
       } else {
         let url = `/api/stock/getStockMySubSelectedTypes?pid=${pid}`;
-        this.$api.get(url, null, rs => {
+        this.$api.get(url).then(rs => {
           this.subItems = rs;
         });
       }

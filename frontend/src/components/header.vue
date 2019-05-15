@@ -1,79 +1,70 @@
 <template>
   <div>
     <b-navbar type="dark" variant="primary" toggleable>
-    <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
-    <b-collapse is-nav id="nav_dropdown_collapse">
-      <b-navbar-nav class="pl-5">
-        <b-nav-item href="#" @click.prevent="go('/')">自選股</b-nav-item>
-        <b-nav-item href="#" @click.prevent="go('/importantNews/1')">市場重大新聞</b-nav-item>
-        <!-- Navbar dropdowns -->
-        <!--<b-nav-item-dropdown text="台股" right>-->
+      <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
+      <b-collapse is-nav id="nav_dropdown_collapse">
+        <b-navbar-nav class="pl-5">
+          <b-nav-item href="#" @click.prevent="go('/')">自選股</b-nav-item>
+          <b-nav-item href="#" @click.prevent="go('/importantNews/1')">市場重大新聞</b-nav-item>
+          <!-- Navbar dropdowns -->
+          <!--<b-nav-item-dropdown text="台股" right>-->
           <!--<b-dropdown-item href="#" @click.prevent="go('/')">-->
-            <!--自選股-->
+          <!--自選股-->
           <!--</b-dropdown-item>-->
           <!--<b-dropdown-item href="#" @click.prevent="go('/importantNews/1')">-->
-            <!--市場重大新聞-->
+          <!--市場重大新聞-->
           <!--</b-dropdown-item>-->
-        <!--</b-nav-item-dropdown>-->
+          <!--</b-nav-item-dropdown>-->
 
-        <b-nav-item-dropdown text="個性化設置" right>
-          <b-dropdown-item href="#" @click.prevent="go('/newsSettings')">
-            新聞設置
-          </b-dropdown-item>
-          <b-dropdown-item href="#" @click.prevent="go('/editMySelectedType')">
-            自選股設置
-          </b-dropdown-item>
-          <b-dropdown-item href="#" @click.prevent="go('/stockDailyTransactions')">
-            交易資料導入與查詢
-          </b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
+          <b-nav-item-dropdown text="個性化設置" right>
+            <b-dropdown-item href="#" @click.prevent="go('/newsSettings')">新聞設置</b-dropdown-item>
+            <b-dropdown-item href="#" @click.prevent="go('/editMySelectedType')">自選股設置</b-dropdown-item>
+            <b-dropdown-item href="#" @click.prevent="go('/stockDailyTransactions')">交易資料導入與查詢</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
 
-      <!-- Right aligned nav items -->
-    <b-navbar-nav>
-        <autocomplete
-        ref="autocomplete"
-        :source="getUrl"
-        input-class="form-control empty-form-control"
-        results-property="data"
-        :results-display="formattedDisplay"
-        @selected="selectedProcess">
-      </autocomplete>
-    </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav>
+          <autocomplete
+            ref="autocomplete"
+            :source="getUrl"
+            input-class="form-control empty-form-control"
+            results-property="data"
+            :results-display="formattedDisplay"
+            @selected="selectedProcess"
+          ></autocomplete>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
   </div>
 </template>
 
 <script>
-import Bus from '../eventBus'
-import Autocomplete from 'stock-auto-complete'
+import Bus from "../eventBus";
+import Autocomplete from "stock-auto-complete";
 export default {
   components: {
     Autocomplete
   },
-  data () {
-    return {
-    }
+  data() {
+    return {};
   },
-  created () {
-  },
+  created() {},
   methods: {
-    getUrl (input) {
-      return '/api/stock/search4StockData?query='+input
+    getUrl(input) {
+      return "/api/stock/search4StockData?query=" + input;
     },
-    selectedProcess (result, refs) {
-      refs.clear()
-      let displays = result.display.split(" ")
+    selectedProcess(result, refs) {
+      refs.clear();
+      let displays = result.display.split(" ");
       let no = displays[0].trim();
       console.info("no===>", no);
-      Bus.$emit('loading', "正在检查是否有新的历史记录...", true)
-      this.$api.post('/api/stock/fetchHistory?no='+no, null, r => {
+      Bus.$emit("loading", "正在检查是否有新的历史记录...", true);
+      this.$api.post("/api/stock/fetchHistory?no=" + no).then(r => {
         // Bus.$emit('success', "自動更新新聞成功!")
-        this.push('/content/' + result.value+'/1')
-        Bus.$emit('selectedProcess')
-
-      })
+        this.push("/content/" + result.value + "/1");
+        Bus.$emit("selectedProcess");
+      });
       /*$(".form-control input[type='hidden']").each(function(index, data){
         let inputValue = $(data).val()
         // alert("value->"+result.value+"/inputValue->"+inputValue)
@@ -84,24 +75,23 @@ export default {
         }
       })*/
     },
-    formattedDisplay (result) {
-      return result.no + ' ' + result.company
+    formattedDisplay(result) {
+      return result.no + " " + result.company;
     },
     push(url) {
-      this.$router.push(url)
-      Bus.$emit('initCurrentPage', 1)
+      this.$router.push(url);
+      Bus.$emit("initCurrentPage", 1);
     },
-    go (url) {
+    go(url) {
       // '/content/' + i.stockId+'/1'
-      this.$router.push(url)
-
+      this.$router.push(url);
     }
   }
-}
+};
 </script>
 
 <style scoped>
-  a {
-    display: inline-block;
-  }
+a {
+  display: inline-block;
+}
 </style>

@@ -7,99 +7,93 @@ var root = '/'
 import * as alerts from '../utils/alert.js'
 
 // 自定义判断元素类型JS
-function toType (obj) {
-  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+function toType(obj) {
+    return {}.toString
+        .call(obj)
+        .match(/\s([a-zA-Z]+)/)[1]
+        .toLowerCase()
 }
 
 /*
   接口处理函数
 */
-function fileUpload(file, url, success, failure) {
-  let param = new FormData() //创建form对象
-  param.append('file',file,file.name)//通过append向form对象添加数据
-  param.append('chunk','0')//添加form表单中其他数据
+function fileUpload(file, url) {
+    return new Promise(function(resolve, reject) {
+        let param = new FormData() //创建form对象
+        param.append('file', file, file.name) //通过append向form对象添加数据
+        param.append('chunk', '0') //添加form表单中其他数据
 
-  let config = {
-    headers:{'Content-Type':'multipart/form-data'}
-  }
-  alerts.loadingStart()
-  axios.post(url,param,config)
-  .then(response=>{
-    // console.log(response.data)
-    alerts.loadingEnd()
-    if(success) {
-      success(response.data)
-    }
-  })
-  .catch(function (err) {
-      alerts.loadingEnd()
-      console.log("err--->"+err)
-      let errMsg = err.response.statusText +" : "+err.response.data
-      if(failure) {
-        failure(err)
-      }
-  })
+        let config = {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        alerts.loadingStart()
+        axios
+            .post(url, param, config)
+            .then(response => {
+                // console.log(response.data)
+                alerts.loadingEnd()
+                resolve(response.data)
+            })
+            .catch(function(err) {
+                alerts.loadingEnd()
+                // console.log('err--->' + err)
+                // let errMsg = err.response.statusText + ' : ' + err.response.data
+                reject(err)
+            })
+    })
 }
 
-function apiAxios (method, url, params, success, failure) {
-  alerts.loadingStart()
-  axios({
-    method: method,
-    headers : {
-      'X-Requested-With' : 'XMLHttpRequest'
-    },
-    url: url,
-    data: method === 'POST' || method === 'PUT' ? params : null,
-    params: method === 'GET' || method === 'DELETE' ? params : null,
-    baseURL: root,
-    withCredentials: false
-  })
-  .then(function (res) {
-    // console.log("res.data---->"+res.data)
-    alerts.loadingEnd()
-    if(success) {
-      success(res.data)
-    }
-  })
-  .catch(function (err) {
-    alerts.loadingEnd()
-    if (err) {
-        console.log("err--->"+err)
-        console.log("failure--->"+failure)
-        console.log("err.response.statusText--->"+err.response.statusText)
-        console.log("err.response.data--->"+err.response.data)
-      if(failure) {
-        console.log("1--->")
-        failure(err)
-      } else if('Unauthorized' == err.response.statusText || err.response.data.indexOf("code: 906,") != -1) {
-        console.log("2--->")
-        alerts.error('會話超時，請重新登錄！')
-        window.location.href = "/#/login"
-      } else {
-        console.log("3--->")
-        // window.alert('api error, HTTP CODE: ' + err)
-        let errMsg = err.response.statusText +" : "+err.response.data
-        alerts.error(errMsg)
-      }
-    }
-  })
+function apiAxios(method, url, params) {
+    return new Promise(function(resolve, reject) {
+        alerts.loadingStart()
+        axios({
+            method: method,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            url: url,
+            data: method === 'POST' || method === 'PUT' ? params : null,
+            params: method === 'GET' || method === 'DELETE' ? params : null,
+            baseURL: root,
+            withCredentials: false
+        })
+            .then(function(res) {
+                // console.log("res.data---->"+res.data)
+                alerts.loadingEnd()
+                resolve(res.data)
+            })
+            .catch(function(err) {
+                alerts.loadingEnd()
+                if (err) {
+                    if ('Unauthorized' == err.response.statusText || err.response.data.indexOf('code: 906,') != -1) {
+                        alerts.error('會話超時，請重新登錄！')
+                        window.location.href = '/#/login'
+                    } else {
+                        // window.alert('api error, HTTP CODE: ' + err)
+                        let errMsg = err.response.statusText + ' : ' + err.response.data
+                        alerts.error(errMsg)
+                        reject(err)
+                    }
+                }
+            })
+    })
 }
 
 // 返回在vue模板中的调用接口
 export default {
-  get: function (url, params, success, failure) {
-    return apiAxios('GET', url, params, success, failure)
-  },
-  post: function (url, params, success, failure) {
-    return apiAxios('POST', url, params, success, failure)
-  },
-  put: function (url, params, success, failure) {
-    return apiAxios('PUT', url, params, success, failure)
-  },
-  delete: function (url, params, success, failure) {
-    return apiAxios('DELETE', url, params, success, failure)
-  },
-  fileUpload: function(file, url, success, failure) {
-    return fileUpload(file, url, success, failure)
-  }
+    get: function(url, params) {
+        return apiAxios('GET', url, params)
+    },
+    post: function(url, params) {
+        return apiAxios('POST', url, params)
+    },
+    put: function(url, params) {
+        return apiAxios('PUT', url, params)
+    },
+    delete: function(url, params) {
+        return apiAxios('DELETE', url, params)
+    },
+    fileUpload: function(file, url) {
+        return fileUpload(file, url)
+    }
 }

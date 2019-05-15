@@ -185,7 +185,7 @@ export default {
               $this.stockId +
               "&selectedType=" +
               $this.currSelectedType;
-            $this.$api.post(url, null, rs => {
+            $this.$api.post(url).then(rs => {
               Bus.$emit("success", "移除成功!");
               // location.reload();
               // $this.$router.go(this.$router.currentRoute)
@@ -213,7 +213,7 @@ export default {
           this.stockId +
           "&companyStatus=" +
           companyStatus;
-        this.$api.post(url, null, rs => {
+        this.$api.post(url).then(rs => {
           Bus.$emit("success", "保存公司現況成功!");
         });
       }
@@ -227,7 +227,7 @@ export default {
       this.typeName = "";
       this.type = "";
       if (stockId != undefined && stockId != "" && stockId != 0) {
-        this.$api.get("/api/stock/getStockData/" + stockId, null, stockData => {
+        this.$api.get("/api/stock/getStockData/" + stockId).then(stockData => {
           if (stockData != "" && stockData != undefined) {
             // this.stockData = stockData
             this.company = stockData.company;
@@ -251,7 +251,7 @@ export default {
         alert("請先選擇對應的自選股名稱!");
       } else {
         let url = `/api/stock/getStockMySubSelectedTypes?pid=${pid}`;
-        this.$api.get(url, null, rs => {
+        this.$api.get(url).then(rs => {
           this.subItems = rs;
         });
       }
@@ -260,7 +260,7 @@ export default {
       if (stockId) {
         this.subSelectedItems = [];
         let url = `/api/stock/getStockMySubSelectedTypesByStockId?stockId=${stockId}`;
-        this.$api.get(url, null, rs => {
+        this.$api.get(url).then(rs => {
           for (let i = 0; i < rs.length; i++) {
             let r = rs[i];
             this.subSelectedItems.push(r.id);

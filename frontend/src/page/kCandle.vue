@@ -60,16 +60,15 @@ export default {
  */
   mounted() {
     this.chartInit();
-    let this_ = this;
     let el = document.getElementById("stockLineItem" + this.kineType);
     Sortable.create(el, {
       handle: ".move-item",
       animation: 150,
-      onUpdate: function(evt) {
+      onUpdate: evt => {
         var item = evt.item; // the current dragged HTMLElement
         // alert(item.outerHTML)
         let sortOrders = [];
-        $("#stockLineItem" + this_.kineType)
+        $("#stockLineItem" + this.kineType)
           .find(".tooltips")
           .each(function() {
             sortOrders.push($(this).attr("charttype"));
@@ -78,15 +77,15 @@ export default {
         let url =
           "/api/stock/updateStockLineSettingsOrder?orders=" +
           encodeURI(sortOrders.join(","));
-        this_.$api.post(url, null, function() {
+        this.$api.post(url).then(function() {
           // this_.chartInit()
           // window.location.assign(window.location.href)
-          this_.$alerts.success("調整顯示順序成功！");
-          // this_.$router.push(this_.$route.path)
-          // this_.$forceUpdate()
+          this.$alerts.success("調整顯示順序成功！");
+          // this.$router.push(this_.$route.path)
+          // this.$forceUpdate()
           window.location.reload();
           /* let currentPath = this_.$route.path
-          this_.$router.go({
+          this.$router.go({
             path: currentPath,
             query: {
                 t: + new Date()
@@ -96,17 +95,17 @@ export default {
       }
     });
     if (this.intervalid1 == null) {
-      this.intervalid1 = setInterval(function() {
-        if (this_.kineType == 0) {
+      this.intervalid1 = setInterval(() => {
+        if (this.kineType == 0) {
           // 重新抓取数据
           let url = `/api/stock/fetchCurrentHistoryDaily?stockId=${
-            this_.stockId
+            this.stockId
           }`;
-          this_.$api.post(url, null, rs => {
-            this_.chartInit();
+          this.$api.post(url).then(rs => {
+            this.chartInit();
           });
         } else {
-          this_.chartInit();
+          this.chartInit();
         }
       }, 10000); // ms
     }
@@ -127,7 +126,7 @@ export default {
       let this_ = this;
       // this_.items = [{"id":"402379055645396992","type":6,"memo":"stockTower","status":1,"sortOrder":1},{"id":"402378966034092032","type":2,"memo":"stockVol","status":1,"sortOrder":2},{"id":"402378966617100288","type":3,"memo":"stockRsi","status":1,"sortOrder":3},{"id":"402379033608523776","type":4,"memo":"stockDmi","status":1,"sortOrder":4},{"id":"402379042320093184","type":5,"memo":"stockMacd","status":1,"sortOrder":5},{"id":"402378924086857728","type":1,"memo":"stockCandle","status":1,"sortOrder":6}]
       let url = "/api/stock/getAvailabelStockLineSettings";
-      /* this.$api.get(url, null, rs => {
+      /* this.$api.get(url).then(rs => {
         // this_.items = [1, 2, 3, 4, 5, 6]
         
       }); */
@@ -198,7 +197,7 @@ export default {
             let chartObj = chartJson.chart
             chartObj.showLoading();
         } */
-        this_.$api.get(url, null, rs => {
+        this_.$api.get(url).then(rs => {
           if (rs != undefined && rs.length > 0) {
             for (let i = 0; i < rs.length; i++) {
               // alert(this.stockId+"--->"+rs[i].date+"--->"+rs[i].opening+"--->"+rs[i].highest+"--->"+rs[i].lowest+"--->"+rs[i].closing+"--->"+rs[i].vol)
