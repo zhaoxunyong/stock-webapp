@@ -54,6 +54,7 @@
       <h5>{{ myStockSelectedName }}</h5>
       <span v-for="i in list" class="d-lg-block">
         <a
+          :id="i.stockId"
           :href="'/content/' + i.stockId+'/1'"
           @click.prevent="go(i.stockId)"
           :class="isSelected(i.stockId)"
@@ -108,7 +109,6 @@ export default {
     // 从stockmyselectedtype.vue中过来：当点击某个自选股标签时
     Bus.$on("getMyStockSelected", (type, name) => {
       if (type != undefined) {
-        this.myStockSelectedName = name;
         this.$api.get("/api/stock/getStockMyDatasByType/" + type).then(r => {
           this.list = r;
           if (r != undefined && r.length > 0) {
@@ -123,6 +123,34 @@ export default {
             this.push("/content/0/1");
             Bus.$emit("emptyNews");
             // Bus.$emit('deliverySelectedTypes', [])
+          }
+        });
+      }
+    });
+
+    // stockDetail.vue中过来：removeOneStockMySelected
+    Bus.$on("removeOneStockMySelected", (type, name) => {
+      if (type != undefined) {
+        this.myStockSelectedName = name;
+        this.$api.get("/api/stock/getStockMyDatasByType/" + type).then(r => {
+          this.list = r;
+          // 取下一个stockId
+          let obj = $(".selected").get(0);
+          let aObj = $(obj)
+            .closest("span")
+            .next()
+            .find("a");
+          let sid = aObj.attr("id");
+          if (sid != undefined) {
+            this.firstStockId = sid;
+          } else if (r != undefined && r.length > 0) {
+            this.firstStockId = r[0].stockId;
+          }
+          if (this.firstStockId) {
+            this.push("/content/" + this.firstStockId + "/1");
+          } else {
+            this.push("/content/0/1");
+            Bus.$emit("emptyNews");
           }
         });
       }
@@ -310,11 +338,11 @@ export default {
         //改变路由的地址
         Bus.$emit("success", "保存成功!");
         // 自動選擇右邊的自選股
-        Bus.$emit(
+        /* Bus.$emit(
           "autoSelectedMyStockSelectedType",
           selectedType,
           myStockSelectedName
-        );
+        ); */
         // this.push('/content/' + stockId+'/1')
         // location.reload()
         this.$refs.modal.hide();

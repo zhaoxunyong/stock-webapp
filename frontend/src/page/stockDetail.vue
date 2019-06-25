@@ -191,7 +191,7 @@ export default {
               // $this.$router.go(this.$router.currentRoute)
               // 自動選擇自選股
               Bus.$emit(
-                "autoSelectedMyStockSelectedType",
+                "removeOneStockMySelected",
                 $this.currSelectedType,
                 $this.currSelectedName
               );
