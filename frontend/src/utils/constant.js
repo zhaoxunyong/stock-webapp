@@ -1,5 +1,5 @@
-// 分页显示20条
-window.PAGE_SIZE = 20
+// 分页显示15条
+window.PAGE_SIZE = 15
 // K线图获取最近xx天的历史数据
 window.RECENT_DATE = -88
 

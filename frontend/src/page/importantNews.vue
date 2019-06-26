@@ -34,7 +34,7 @@ export default {
       numberOfPages: 50,
       currentPage: this.$route.params.pageNum,
       type: 1,
-      pageSize: 15,
+      pageSize: PAGE_SIZE,
       intervalid1: null,
       fields: {
         content_title: {
