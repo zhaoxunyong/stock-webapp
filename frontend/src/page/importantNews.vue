@@ -9,12 +9,12 @@
         <b-table striped hover :items="items" :fields="fields">
           <span slot="content_title" slot-scope="data" v-html="data.value"/>
         </b-table>
-        <div align="center">
+        <!-- <div align="center">
           <span class="oi oi-arrow-thick-left" style="cursor: pointer;" @click="toBack"></span>
           <span style="padding-left: 10px;"></span>
           <span class="oi oi-arrow-thick-right" style="cursor: pointer;" @click="toFront"></span>
-        </div>
-        <!-- <b-pagination-nav align="center" :number-of-pages="numberOfPages" base-url="#" :link-gen="linkGen" /> -->
+        </div> -->
+        <b-pagination-nav align="center" :number-of-pages="numberOfPages" base-url="#" :link-gen="linkGen" />
       </div>
     </template>
   </main-layout>
@@ -30,10 +30,11 @@ export default {
   data() {
     return {
       items: [],
-      numberOfPages: 0,
+      // numberOfPages: 0,
+      numberOfPages: 50,
       currentPage: this.$route.params.pageNum,
       type: 1,
-      pageSize: PAGE_SIZE,
+      pageSize: 15,
       intervalid1: null,
       fields: {
         content_title: {
@@ -69,15 +70,9 @@ export default {
       }, 10 * 60 * 1000);
     } */
 
-    // 上一个股票
+    /* // 上一个股票
     toFront() {
       let _router = this.$router;
-      // let obj = $(".selected").get(0)
-      // let aObj = $(obj).closest("span").prev().find("a");
-      // let href = aObj.attr('href')
-      // if(href != undefined) {
-      //   this.push("/importantNews/")
-      // }
       if (!this.items.length || this.items.length == 0) {
         alert("已经没有下一页了.");
       } else {
@@ -89,19 +84,13 @@ export default {
     // 下一个股票
     toBack() {
       let _router = this.$router;
-      // let obj = $(".selected").get(0)
-      // let aObj = $(obj).closest("span").next().find("a");
-      // let href = aObj.attr('href')
-      // if(href != undefined) {
-      //   this.push(href)
-      // }
       let nextPage = parseInt(this.currentPage) - 1;
       if (nextPage < 1) {
         alert("已经没有上一页了.");
       } else {
         _router.push("/importantNews/" + nextPage);
       }
-    },
+    }, */
     autoFetch() {
       Bus.$emit("loading", "正在自動獲取最新的新聞中...", true);
       console.log("News autoFetch importantNews started......");
@@ -146,7 +135,7 @@ export default {
       let url = rootUrl + this.currentPage + "/" + this.pageSize;
       this.$api.get(url).then(rs => {
         // this.items = rs
-        this.numberOfPages = rs.pageTotal;
+        // this.numberOfPages = rs.pageTotal;
         $(rs.rows).each(function() {
           let context =
             '<a target="_blank" href="' + this.url + '">' + this.froms + "</a>";
