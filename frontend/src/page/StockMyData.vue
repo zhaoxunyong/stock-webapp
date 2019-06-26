@@ -28,6 +28,14 @@
             @click="toBack"
           >
         </div>
+        <div>
+          <img
+            id="changColspanId"
+            src="static/image/expand.png"
+            style="width: 35px; height: 35px; cursor: pointer;"
+            @click="changColspan"
+          >
+        </div>
       </div>
       <b-modal
         id="modalPrevent"
@@ -40,7 +48,7 @@
         <!-- <form @submit.stop.prevent="handleSubmit">
           <b-form-select v-model="selected" :options="options" class="mb-3" />
         </form>-->
-        <span v-for="item in items">
+        <span :key="item.id" v-for="item in items">
           <b-button
             class="m-1"
             variant="success"
@@ -52,7 +60,7 @@
 
     <div class="selected_name scrollbar" id="style-1">
       <h5>{{ myStockSelectedName }}</h5>
-      <span v-for="i in list" class="d-lg-block">
+      <span :key="i.stockId" v-for="i in list" class="d-lg-block">
         <a
           :id="i.stockId"
           :href="'/content/' + i.stockId+'/1'"
@@ -87,7 +95,9 @@ export default {
       selectedTypes: [],
       // 某只股票的自选股标签
       mySelectedTypes: [],
-      items: []
+      items: [],
+      // 是否合并
+      isColspan: false
     };
   },
   created() {
@@ -246,6 +256,18 @@ export default {
       if (href != undefined) {
         this.push(href);
       }
+    },
+    // 展开或者合并
+    changColspan() {
+      this.isColspan = !this.isColspan;
+      Bus.$emit("changColspan", this.isColspan);
+      // change the icon
+      if(this.isColspan) {
+        $("#changColspanId").attr("src", "static/image/colspan.png");
+      } else {
+        $("#changColspanId").attr("src", "static/image/expand.png");
+      }
+
     },
     openModal() {
       this.getStockMySelectedTypes();
