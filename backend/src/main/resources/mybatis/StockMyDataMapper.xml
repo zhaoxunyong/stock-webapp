@@ -106,7 +106,7 @@
 	AND b.status = 1
 	AND c.selected_type = #{type,jdbcType=BIGINT}
 	GROUP BY a.stock_id
-	ORDER BY c.id DESC
+	ORDER BY a.stock_id ASC
   </select>
 
   <select id="getStockMyDatasBySubId" resultMap="BaseResultMap">
@@ -133,6 +133,6 @@
 	AND b.status = 1
 	AND c.sub_selected_type = #{subId,jdbcType=BIGINT}
 	GROUP BY a.stock_id
-	ORDER BY c.id DESC
+	ORDER BY a.stock_id ASC
   </select>
 </mapper>
