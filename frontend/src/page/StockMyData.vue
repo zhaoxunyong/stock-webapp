@@ -262,12 +262,11 @@ export default {
       this.isColspan = !this.isColspan;
       Bus.$emit("changColspan", this.isColspan);
       // change the icon
-      if(this.isColspan) {
+      if (this.isColspan) {
         $("#changColspanId").attr("src", "static/image/colspan.png");
       } else {
         $("#changColspanId").attr("src", "static/image/expand.png");
       }
-
     },
     openModal() {
       this.getStockMySelectedTypes();
@@ -389,7 +388,7 @@ export default {
   position: fixed;
   z-index: 1;
   left: 38%;
-  top: 30%;
+  top: 18%;
   width: 400px;
 }
 

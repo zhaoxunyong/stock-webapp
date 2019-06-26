@@ -13,7 +13,7 @@
       </nav>
     </div>
     <div class="container-fluid scrollbar news-content" id="style-1">
-      <b-table striped hover :items="items" :fields="fields">
+      <b-table striped hover :items="items" :fields="fields" class="p-0 m-0">
         <span slot="content_title" slot-scope="data" v-html="data.value"/>
       </b-table>
       <b-pagination-nav
@@ -43,7 +43,8 @@ export default {
       fields: {
         content_title: {
           label: '<span id="content_id">: </span>個股新聞與研究報告',
-          sortable: true
+          sortable: true,
+          tdClass: "newsTdClass"
         }
       },
       items: [],
@@ -269,10 +270,14 @@ export default {
   font-weight: bold;
 }
 
-.scrollbar {
+/* .scrollbar {
   height: 73vh;
   margin: 0 auto;
   overflow: auto;
+} */
+
+.newsTdClass {
+  padding: 0.25rem !important;
 }
 #style-1::-webkit-scrollbar {
   width: 8px;
