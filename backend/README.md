@@ -23,6 +23,7 @@ brew install mysql@5.7
 https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.25-macos10.14-x86_64.dmg
 set password = password('Aa654321');
 
+sudo rm -fr /var/lib/mysql
 sudo mkdir -p /var/lib/mysql
 sudo chown -R mysql.mysql /var/lib/mysql
 sudo mysqld --initialize-insecure --user=mysql
@@ -36,8 +37,8 @@ lower_case_table_names=1
 sql_mode ='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
 
 启动服务：
-sudo systemctl enable mysqld
-sudo systemctl restart mysqld
+sudo systemctl enable mysql
+sudo systemctl restart mysql
 
 windows安装：
 https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24-winx64.zip
