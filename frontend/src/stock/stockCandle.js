@@ -8,6 +8,7 @@ import utils from '../utils/index.js'
 
 // import boll from 'bollinger-bands'
 // var MACD = require('technicalindicators').MACD
+var storage = window.localStorage
 let BB = require('technicalindicators').BollingerBands
 
 export default function getData(chartObj, datasets, kineType) {
@@ -33,8 +34,7 @@ export default function getData(chartObj, datasets, kineType) {
     // let highs = stockUtils.getDisplaySlice(utils.clone(heighDatas), recentDatas, 100)
     // let lowest = lows.reduce((pre, cur) => pre < cur ? pre : cur)
     // let highest = highs.reduce((pre,cur) => pre>cur?pre:cur)
-
-    return {
+    let obj = {
         // backgroundColor: '#21202D',
         // color: '#fff',
         /* title: {
@@ -221,129 +221,140 @@ export default function getData(chartObj, datasets, kineType) {
                 start: STOCK_CONFIG.st,
                 end: STOCK_CONFIG.ed
             }
-        ],
-        series: [
-            {
-                type: 'k', //Candlestick
-                name: '日K',
-                id: 'k-line',
-                // braGap用于设置同一个类目内的柱形之间的间距
-                // barGap: '1%',
-                // barCategoryGap则用于设置不同类目之间的间距
-                barCategoryGap: STOCK_CONFIG.barCategoryGap,
-                barWidth: STOCK_CONFIG.barWidth,
-                data: stockUtils.getSlice(datas.values),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                itemStyle: {
-                    normal: {
-                        width: 1,
-                        color: STOCK_CONFIG.col.up, //阳线填充色
-                        color0: STOCK_CONFIG.col.down,
-                        borderColor: STOCK_CONFIG.col.up, //阳线边框色
-                        borderColor0: STOCK_CONFIG.col.down
-                    }
-                }
-            },
-            {
-                type: 'line',
-                name: '5' + kDisplay + '平均线',
-                data: stockUtils.getSlice(stockUtils.calculateMA(datas, 5)),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                lineStyle: {
-                    normal: {
-                        width: 1,
-                        color: STOCK_CONFIG.col.m5
-                    }
-                }
-            },
-            {
-                type: 'line',
-                name: '10' + kDisplay + '平均线',
-                data: stockUtils.getSlice(stockUtils.calculateMA(datas, 10)),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                lineStyle: {
-                    normal: {
-                        width: 1,
-                        color: STOCK_CONFIG.col.m10
-                    }
-                }
-            },
-            {
-                type: 'line',
-                name: '20' + kDisplay + '平均线',
-                data: stockUtils.getSlice(stockUtils.calculateMA(datas, 20)),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                lineStyle: {
-                    normal: {
-                        width: 1,
-                        color: STOCK_CONFIG.col.m20
-                    }
-                }
-            },
-            {
-                type: 'line',
-                name: '60' + kDisplay + '平均线',
-                data: stockUtils.getSlice(stockUtils.calculateMA(datas, 60)),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                lineStyle: {
-                    normal: {
-                        width: 1,
-                        color: STOCK_CONFIG.col.m60
-                    }
-                }
-            },
-            {
-                type: 'line',
-                name: '上軸線',
-                data: stockUtils.getSlice(uppers),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                lineStyle: {
-                    normal: {
-                        width: 1,
-                        color: '#7999f2'
-                    }
-                }
-            },
-            {
-                type: 'line',
-                name: '中軸線',
-                data: stockUtils.getSlice(middles),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                lineStyle: {
-                    normal: {
-                        width: 1,
-                        color: '#7999f2'
-                    }
-                }
-            },
-            {
-                type: 'line',
-                name: '下軸線',
-                data: stockUtils.getSlice(lowers),
-                smooth: true,
-                showSymbol: false,
-                symbol: 'none',
-                lineStyle: {
-                    normal: {
-                        width: 1,
-                        color: '#7999f2'
-                    }
+        ]
+        // series: seriesDatas
+    }
+    const seriesData1s = [
+        {
+            type: 'k', //Candlestick
+            name: '日K',
+            id: 'k-line',
+            // braGap用于设置同一个类目内的柱形之间的间距
+            // barGap: '1%',
+            // barCategoryGap则用于设置不同类目之间的间距
+            barCategoryGap: STOCK_CONFIG.barCategoryGap,
+            barWidth: STOCK_CONFIG.barWidth,
+            data: stockUtils.getSlice(datas.values),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            itemStyle: {
+                normal: {
+                    width: 1,
+                    color: STOCK_CONFIG.col.up, //阳线填充色
+                    color0: STOCK_CONFIG.col.down,
+                    borderColor: STOCK_CONFIG.col.up, //阳线边框色
+                    borderColor0: STOCK_CONFIG.col.down
                 }
             }
-        ]
+        },
+        {
+            type: 'line',
+            name: '5' + kDisplay + '平均线',
+            data: stockUtils.getSlice(stockUtils.calculateMA(datas, 5)),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            lineStyle: {
+                normal: {
+                    width: 2,
+                    color: STOCK_CONFIG.col.m5
+                }
+            }
+        },
+        {
+            type: 'line',
+            name: '10' + kDisplay + '平均线',
+            data: stockUtils.getSlice(stockUtils.calculateMA(datas, 10)),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            lineStyle: {
+                normal: {
+                    width: 2,
+                    color: STOCK_CONFIG.col.m10
+                }
+            }
+        },
+        {
+            type: 'line',
+            name: '20' + kDisplay + '平均线',
+            data: stockUtils.getSlice(stockUtils.calculateMA(datas, 20)),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            lineStyle: {
+                normal: {
+                    width: 2,
+                    color: STOCK_CONFIG.col.m20
+                }
+            }
+        },
+        {
+            type: 'line',
+            name: '60' + kDisplay + '平均线',
+            data: stockUtils.getSlice(stockUtils.calculateMA(datas, 60)),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            lineStyle: {
+                normal: {
+                    width: 2,
+                    color: STOCK_CONFIG.col.m60
+                }
+            }
+        }
+    ]
+    const seriesData2s = [
+        {
+            type: 'line',
+            name: '上軸線',
+            data: stockUtils.getSlice(uppers),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            lineStyle: {
+                normal: {
+                    width: 1,
+                    color: '#7999f2'
+                }
+            }
+        },
+        {
+            type: 'line',
+            name: '中軸線',
+            data: stockUtils.getSlice(middles),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            lineStyle: {
+                normal: {
+                    width: 1,
+                    color: '#7999f2'
+                }
+            }
+        },
+        {
+            type: 'line',
+            name: '下軸線',
+            data: stockUtils.getSlice(lowers),
+            smooth: true,
+            showSymbol: false,
+            symbol: 'none',
+            lineStyle: {
+                normal: {
+                    width: 1,
+                    color: '#7999f2'
+                }
+            }
+        }
+    ]
+    obj['series'] = []
+    let checkboxChecked = storage.getItem('checkboxChecked')
+    if (checkboxChecked == 'true') {
+        obj['series'] = seriesData1s.concat(seriesData2s)
+    } else {
+        obj['series'] = seriesData1s
     }
+    return obj
 }

@@ -58,7 +58,7 @@
               :value="item.id"
               @click="changedValue(item.id,item.name)"
               :checked="subSelectedItems.length > 0 && subSelectedItems.indexOf(item.id) != -1?'checked':''"
-            >
+            />
             <label class="form-check-label" for="inlineCheckbox1">
               <a
                 href="#"
@@ -74,8 +74,15 @@
             style="width: 75%"
             id="formControlTextarea1"
             v-model="companyStatus"
-          >
+          />
           <b-button class="float-left ml-3 my-3" variant="success" @click="saveCompanyStatus">保存</b-button>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            :checked="checkboxChecked"
+            @click="setCheckboxChecked"
+            id="defaultCheck1"
+          />
           <!--<textarea class="form-control" id="formControlTextarea1" rows="3" v-model="stockData.companyStatus"></textarea>-->
         </div>
       </b-tabs>
@@ -87,6 +94,7 @@
 </template>
 <script>
 import Bus from "../eventBus";
+var storage = window.localStorage;
 export default {
   data() {
     return {
@@ -102,10 +110,16 @@ export default {
       companyStatus: "",
       subItems: [],
       subSelectedItems: [],
-      currSubId: ""
+      currSubId: "",
+      checkboxChecked: ""
     };
   },
   created() {
+    let checkboxChecked = storage.getItem("checkboxChecked");
+    if (checkboxChecked == "true") {
+      this.checkboxChecked = "checked";
+    }
+
     this.subItems = [];
     this.subSelectedItems = [];
     this.stockId = this.$route.params.stockId;
@@ -129,6 +143,10 @@ export default {
   },
   mounted() {},
   methods: {
+    setCheckboxChecked(e) {
+      storage.setItem("checkboxChecked", e.target.checked);
+      Bus.$emit("checkboxChecked");
+    },
     go(id, name) {
       if (id === this.currSubId) {
         // 点击的是同一个
@@ -291,5 +309,11 @@ export default {
   position: relative;
   top: -30px;
   left: -16%;
+}
+#defaultCheck1 {
+  top: 75px;
+  left: -83px;
+  z-index: 9999;
+  position: relative;
 }
 </style>

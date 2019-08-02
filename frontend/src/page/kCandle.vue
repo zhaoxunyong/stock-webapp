@@ -98,9 +98,7 @@ export default {
       this.intervalid1 = setInterval(() => {
         if (this.kineType == 0) {
           // 重新抓取数据
-          let url = `/api/stock/fetchCurrentHistoryDaily?stockId=${
-            this.stockId
-          }`;
+          let url = `/api/stock/fetchCurrentHistoryDaily?stockId=${this.stockId}`;
           this.$api.post(url).then(rs => {
             this.chartInit();
           });
@@ -112,6 +110,9 @@ export default {
   },
   created() {
     this.init();
+    Bus.$on("checkboxChecked", (type, name) => {
+      this.chartInit();
+    });
   },
   destroyed: function() {
     if (this.intervalid1 != null) {
@@ -235,7 +236,8 @@ export default {
                     chartObj,
                     this_.$utils.clone(srcDatas),
                     this_.kineType
-                  )
+                  ),
+                  true
                 );
                 /* chartObj.getZr().on("mousewheel", function (param) {
                   console.log("mousewheel--->"+chartObj);

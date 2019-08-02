@@ -39,6 +39,7 @@ export default function getData(datasets, kineType) {
     // let dmDown14Results = dmiResult.dmDown14Result
     // let dxResults = dmiResult.dxResult
     let adxr14Results = dmiResult.adxr14Result
+    let xr14Result = dmiResult.xr14Result
 
     return {
         // backgroundColor: '#21202D',
@@ -66,6 +67,7 @@ export default function getData(datasets, kineType) {
                 <font color="${STOCK_CONFIG.col.diDown}">-DI14: ${params[1].value.toFixed(1)}</font>
                 <font color="${STOCK_CONFIG.col.adx}">ADX14: ${params[2].value.toFixed(1)}</font>
                 <font color="${STOCK_CONFIG.col.adxr}">ADXR14: ${params[3].value.toFixed(1)}</font>
+                <font color="${STOCK_CONFIG.col.xr}">ADXR14: ${params[4].value.toFixed(1)}</font>
                 `
                 // <font color="${STOCK_CONFIG.col.adx}">TR:</font> ${params[3].value.toFixed(1)}
                 // <font color="${STOCK_CONFIG.col.adx}">TR14:</font> ${params[4].value.toFixed(1)}
@@ -215,7 +217,7 @@ export default function getData(datasets, kineType) {
                 symbol: 'none',
                 lineStyle: {
                     normal: {
-                        width: 1,
+                        width: 2,
                         color: STOCK_CONFIG.col.diUp
                     }
                 }
@@ -229,7 +231,7 @@ export default function getData(datasets, kineType) {
                 symbol: 'none',
                 lineStyle: {
                     normal: {
-                        width: 1,
+                        width: 2,
                         color: STOCK_CONFIG.col.diDown
                     }
                 }
@@ -243,7 +245,7 @@ export default function getData(datasets, kineType) {
                 symbol: 'none',
                 lineStyle: {
                     normal: {
-                        width: 1,
+                        width: 2,
                         color: STOCK_CONFIG.col.adx
                     }
                 }
@@ -348,8 +350,22 @@ export default function getData(datasets, kineType) {
                 symbol: 'none',
                 lineStyle: {
                     normal: {
-                        width: 1,
+                        width: 2,
                         color: STOCK_CONFIG.col.adxr
+                    }
+                }
+            },
+            {
+                name: 'X-R14',
+                type: 'line',
+                data: stockUtils.getSlice(xr14Result),
+                smooth: true,
+                showSymbol: false,
+                symbol: 'none',
+                lineStyle: {
+                    normal: {
+                        width: 1,
+                        color: STOCK_CONFIG.col.xr
                     }
                 }
             }

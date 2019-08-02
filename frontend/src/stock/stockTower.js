@@ -166,10 +166,10 @@ export default function getData(datasets, kineType) {
                 itemStyle: {
                     normal: {
                         width: 1,
-                        color: STOCK_CONFIG.col.up, //阳线填充色
-                        color0: STOCK_CONFIG.col.down,
-                        borderColor: STOCK_CONFIG.col.up, //阳线边框色
-                        borderColor0: STOCK_CONFIG.col.down
+                        color: STOCK_CONFIG.col.towerUp, //阳线填充色
+                        color0: STOCK_CONFIG.col.towerDown,
+                        borderColor: STOCK_CONFIG.col.towerUp, //阳线边框色
+                        borderColor0: STOCK_CONFIG.col.towerDown
                     }
                 }
             }

@@ -3,12 +3,12 @@
     <b-row>
       <b-col cols="12" sm="12">
         <b-row>
-            <b-col class="p-0 m-0 mw-100">
-              <KCandle kineType="0"></KCandle>
-            </b-col>
-            <b-col class="p-0 m-0 mw-100">
-              <KCandle kineType="1"></KCandle>
-            </b-col>
+          <b-col class="p-0 m-0 mw-100">
+            <KCandle kineType="0"></KCandle>
+          </b-col>
+          <b-col class="p-0 m-0 mw-100">
+            <KCandle kineType="1"></KCandle>
+          </b-col>
         </b-row>
         <!-- <b-row>
             <b-col class="p-0 m-0 mw-100">
@@ -33,28 +33,26 @@
             <b-col class="p-0 m-0 mw-100">
               <MacdWeek></MacdWeek>
             </b-col>
-        </b-row> -->
+        </b-row>-->
       </b-col>
     </b-row>
   </div>
 </template>
 <script>
-import Bus from '../eventBus'
-import KCandle from './kCandle.vue'
+import Bus from "../eventBus";
+import KCandle from "./kCandle.vue";
 
 export default {
   components: {
     KCandle
   },
-  data () {
-    return {
-
-    }
+  data() {
+    return {};
   },
-  created () {
+  created() {
     // from changColspan of the StockMyData page
-    Bus.$on("changColspan", (isColspan) => {
-      if(isColspan) {
+    Bus.$on("changColspan", isColspan => {
+      if (isColspan) {
         // colspan
         $("#stockKLineId").hide();
       } else {
@@ -63,15 +61,11 @@ export default {
       }
     });
   },
-  mounted () {
-  },
-  methods: {
-  },
-  watch: {
-  }
-}
+  mounted() {},
+  methods: {},
+  watch: {}
+};
 </script>
 
 <style scoped>
-
 </style>

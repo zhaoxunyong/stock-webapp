@@ -18,13 +18,21 @@ export default function getData(datasets, kineType) {
     let rsi12_src = RSI.calculate(inputRSI12)
     let rsi12 = stockUtils.getSlice(rsi12_src)
 
-    let inputRSI100 = {
+    let inputRSI30 = {
         values: stockUtils.getCloses(datas),
-        period: 100
+        period: 30
     }
 
-    let rsi100_src = RSI.calculate(inputRSI100)
-    let rsi100 = stockUtils.getSlice(rsi100_src)
+    let rsi30_src = RSI.calculate(inputRSI30)
+    let rsi30 = stockUtils.getSlice(rsi30_src)
+
+    let inputRSI60 = {
+        values: stockUtils.getCloses(datas),
+        period: 60
+    }
+
+    let rsi60_src = RSI.calculate(inputRSI60)
+    let rsi60 = stockUtils.getSlice(rsi60_src)
 
     return {
         // backgroundColor: '#21202D',
@@ -48,7 +56,8 @@ export default function getData(datasets, kineType) {
             // extraCssText:'width:100px;height:60px;',
             formatter: function(params) {
                 let v = `<font color="${STOCK_CONFIG.col.rsi12}">RSI-12: ${params[0].value.toFixed(1)}</font>
-                <font color="${STOCK_CONFIG.col.rsi100}">RSI-100: ${params[1].value.toFixed(1)}</font>`
+                <font color="${STOCK_CONFIG.col.rsi30}">RSI-30: ${params[1].value.toFixed(1)}</font>
+                <font color="${STOCK_CONFIG.col.rsi60}">RSI-60: ${params[2].value.toFixed(1)}</font>`
                 $('#tooltipId3' + kineType).html(v)
                 return ''
             },
@@ -186,22 +195,36 @@ export default function getData(datasets, kineType) {
                 symbol: 'none',
                 lineStyle: {
                     normal: {
-                        width: 1,
+                        width: 2,
                         color: STOCK_CONFIG.col.rsi12
                     }
                 }
             },
             {
-                name: 'RSI-100',
+                name: 'RSI-30',
                 type: 'line',
-                data: rsi100,
+                data: rsi30,
                 smooth: true,
                 showSymbol: false,
                 symbol: 'none',
                 lineStyle: {
                     normal: {
-                        width: 1,
-                        color: STOCK_CONFIG.col.rsi100
+                        width: 2,
+                        color: STOCK_CONFIG.col.rsi30
+                    }
+                }
+            },
+            {
+                name: 'RSI-60',
+                type: 'line',
+                data: rsi60,
+                smooth: true,
+                showSymbol: false,
+                symbol: 'none',
+                lineStyle: {
+                    normal: {
+                        width: 2,
+                        color: STOCK_CONFIG.col.rsi60
                     }
                 }
             }
