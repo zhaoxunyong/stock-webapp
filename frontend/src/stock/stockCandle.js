@@ -316,7 +316,7 @@ export default function getData(chartObj, datasets, kineType) {
             lineStyle: {
                 normal: {
                     width: 1,
-                    color: '#7999f2'
+                    color: STOCK_CONFIG.col.boll
                 }
             }
         },
@@ -330,7 +330,7 @@ export default function getData(chartObj, datasets, kineType) {
             lineStyle: {
                 normal: {
                     width: 1,
-                    color: '#7999f2'
+                    color: STOCK_CONFIG.col.boll
                 }
             }
         },
@@ -344,7 +344,7 @@ export default function getData(chartObj, datasets, kineType) {
             lineStyle: {
                 normal: {
                     width: 1,
-                    color: '#7999f2'
+                    color: STOCK_CONFIG.col.boll
                 }
             }
         }

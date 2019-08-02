@@ -17,6 +17,7 @@ window.STOCK_CONFIG = {
         m10: '#9400D3',
         m20: '#228B22',
         m60: '#FF7500',
+        boll: '#228B22',
         // vol
         volup: 'red', // red
         voldown: '#30d94c',
